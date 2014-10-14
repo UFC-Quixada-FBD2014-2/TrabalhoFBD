@@ -4,3 +4,4 @@
 			parent::__construct($mensagem);
 		}
 	}
+?>	

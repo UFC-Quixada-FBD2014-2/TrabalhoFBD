@@ -35,3 +35,4 @@
 			$this->data = $data;
 		}
 	}
+?>

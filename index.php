@@ -12,6 +12,7 @@
 	$controlador->cadastrarTurista($turista);
 	
 	echo "3";
+?>
 	
 	
 	
