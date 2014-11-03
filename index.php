@@ -17,7 +17,6 @@
 	echo ConstantesMensagensExcecoes::FALHA_AO_CRIAR_CONEXAO.'<br>';
 	echo ConstantesMensagensExcecoes::FALHA_AO_EXECUTAR_QUERY.'<br>';
 	echo ConstantesMensagensExcecoes::PREPARE_STATEMENT_FALHA.'<br>';
-	
 ?>
 	
 	
