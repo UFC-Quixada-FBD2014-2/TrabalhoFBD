@@ -1,4 +1,6 @@
 <?php
+	include_once 'br.ufc.quixada.fbd.sgbd/Conexao.class.php';
+	
 	Class Conexao{
 		
 		private $host = "localhost";
@@ -16,7 +18,7 @@
 			if($this->conexao)
 				return $this->conexao;
 			else
-				throw new FalhaAoCriarConexao("Não foi possível criar a conexão");
+				throw new FalhaAoCriarConexao(ConstantesMensagensExcecoes::FALHA_AO_CRIAR_CONEXAO);
 		}
 		
 		function fecharConexao(){

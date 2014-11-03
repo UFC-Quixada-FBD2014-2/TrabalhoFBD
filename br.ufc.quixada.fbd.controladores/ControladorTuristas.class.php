@@ -1,8 +1,8 @@
 <?php
-	include_once 'br.ufc.quixada.fbd.Repositorios/RepositorioTuristas.class.php';
-	include_once 'br.ufc.quixada.fbd.Excecoes/ErroAoExecutarQuery.class.php';
-	include_once 'br.ufc.quixada.fbd.Excecoes/FalhaAoCriarConexao.class.php';
-	include_once 'br.ufc.quixada.fbd.Excecoes/PrepareStatementFalha.class.php';
+	include_once 'br.ufc.quixada.fbd.repositorios/RepositorioTuristas.class.php';
+	include_once 'br.ufc.quixada.fbd.excecoes/FalhaAoCriarConexao.class.php';
+	include_once 'br.ufc.quixada.fbd.excecoes/FalhaAoExecutarQuery.class.php';
+	include_once 'br.ufc.quixada.fbd.excecoes/PrepareStatementFalha.class.php';
 	
 	Class ControladorTuristas{
 		

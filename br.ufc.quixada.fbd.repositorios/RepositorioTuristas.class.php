@@ -1,9 +1,10 @@
 <?php
 
-	include_once 'br.ufc.quixada.fbd.SGBD/Conexao.class.php';
-	include_once 'br.ufc.quixada.fbd.Excecoes/PrepareStatementFalha.class.php';
-	include_once 'br.ufc.quixada.fbd.Excecoes/FalhaAoCriarConexao.class.php';
-	include_once 'br.ufc.quixada.fbd.Excecoes/FalhaAoExecutarQuery.class.php';
+	include_once 'br.ufc.quixada.fbd.sgbd/Conexao.class.php';
+	include_once 'br.ufc.quixada.fbd.excecoes/PrepareStatementFalha.class.php';
+	include_once 'br.ufc.quixada.fbd.excecoes/FalhaAoCriarConexao.class.php';
+	include_once 'br.ufc.quixada.fbd.excecoes/FalhaAoExecutarQuery.class.php';
+	include_once 'br.ufc.quixada.fbd.enumeration/ConstantesMensagensExcecoes.php';
 	
 	Class RepositorioTuristas{
 		private $conexao;
@@ -33,10 +34,10 @@
 				if(pg_execute($conexao, $queryName, array($idCategoria, $nome, $dataDeNascimento, $senha, $email))){
 					$this->conexao->fecharConexao();
 				}else{
-					throw new FalhaAoExecutarQuery('Ocorreu algum erro na execução da Query');	
+					throw new FalhaAoExecutarQuery(ConstantesMensagensExcecoes::FALHA_AO_EXECUTAR_QUERY);	
 				}
 			}else{
-				throw new PrepareStatementFalha('Erro ao criar prepare statement');
+				throw new PrepareStatementFalha(ConstantesMensagensExcecoes::PREPARE_STATEMENT_FALHA);
 			}	
 		}
 		
