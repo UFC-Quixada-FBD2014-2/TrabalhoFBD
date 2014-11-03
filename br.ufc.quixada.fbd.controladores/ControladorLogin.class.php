@@ -1,4 +1,6 @@
 <?php
+	include_once 'FalhaAoRealizarLogin.class.php';
+	
 	Class ControladorLogin{
 		private $controladorTuristas;
 		
@@ -19,7 +21,11 @@
 		}
 		
 		function realizarLogin($email, $senha){
-			$turista = $this->controladorTuristas->pegarTuristaPorEmail($email);
+			try{
+				$turista = $this->controladorTuristas->pegarTuristaPorEmail($email);
+			} catch (FalhaAoBuscarTurista $e){
+				throw FalhaAoRealizarLogin();
+			}
 				
 			if($turista != null){
 				if($senha == $turista->getSenha()){
@@ -30,10 +36,10 @@
 					$_SESSION['email'] = $email;
 					$_SESSION['login_string'] = hash('sha512', $senha.$ip.$user_browser);
 				}else{
-					//senha não correspondente
+					throw new FalhaAoRealizarLogin();
 				}
 			}else{
-				//usuário inexistente
+				throw new FalhaAoRealizarLogin();
 			}
 		}
 		

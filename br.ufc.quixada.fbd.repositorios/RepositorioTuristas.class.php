@@ -1,10 +1,10 @@
 <?php
 
 	include_once 'br.ufc.quixada.fbd.sgbd/Conexao.class.php';
-	include_once 'br.ufc.quixada.fbd.excecoes/PrepareStatementFalha.class.php';
-	include_once 'br.ufc.quixada.fbd.excecoes/FalhaAoCriarConexao.class.php';
-	include_once 'br.ufc.quixada.fbd.excecoes/FalhaAoExecutarQuery.class.php';
-	include_once 'br.ufc.quixada.fbd.enumeration/ConstantesMensagensExcecoes.php';
+	include_once 'FalhaPrepareStatement.class.php';
+	include_once 'br.ufc.quixada.fbd.sgbd/FalhaAoCriarConexao.class.php';
+	include_once 'FalhaAoExecutarQuery.class.php';
+	include_once 'FalhaTuristaNaoCadastrado.class.php';
 	
 	Class RepositorioTuristas{
 		private $conexao;
@@ -15,11 +15,7 @@
 		}
 		
 		function cadastrar(Turista $novoTurista){
-			try{
-				$conexao = $this->conexao->abrirConexao();
-			}catch (FalhaAoCriarConexao $e){
-				throw $e;
-			}
+			$conexao = $this->conexao->abrirConexao();
 			
 			$idCategoria = $novoTurista->getCategoria();
 			$nome = $novoTurista->getNome();
@@ -34,19 +30,50 @@
 				if(pg_execute($conexao, $queryName, array($idCategoria, $nome, $dataDeNascimento, $senha, $email))){
 					$this->conexao->fecharConexao();
 				}else{
-					throw new FalhaAoExecutarQuery(ConstantesMensagensExcecoes::FALHA_AO_EXECUTAR_QUERY);	
+					throw new FalhaAoExecutarQuery();	
 				}
 			}else{
-				throw new PrepareStatementFalha(ConstantesMensagensExcecoes::PREPARE_STATEMENT_FALHA);
+				throw new FalhaPrepareStatement();
 			}	
 		}
 		
 		function removerPorId($id_turista){
+			$conexao = $this->conexao->abrirConexao();
 			
+			$queryName = 'query_remover_turista_por_id';
+			$sqlQuery = 'DELETE FROM Turista WHERE idTurista = $1';
+				
+			if(pg_prepare($conexao, $queryName, $sqlQuery)){
+				if(pg_execute($conexao, $queryName, array($id_turista))){
+					$this->conexao->fecharConexao();
+				}else{
+					throw new FalhaAoExecutarQuery();
+				}
+			}else{
+				throw new FalhaPrepareStatement();
+			}
 		}
 		
 		function removerTurista(Turista $turista){
+			$conexao = $this->conexao->abrirConexao();
+				
+			$id_turista = $turista->getId();
+			if($id_turista == null){
+				throw new FalhaTuristaNaoCadastrado();
+			}
 			
+			$queryName = 'query_remover_turista';
+			$sqlQuery = 'DELETE FROM Turista WHERE idTurista = $1';
+			
+			if(pg_prepare($conexao, $queryName, $sqlQuery)){
+				if(pg_execute($conexao, $queryName, array($id_turista))){
+					$this->conexao->fecharConexao();
+				}else{
+					throw new FalhaAoExecutarQuery();
+				}
+			}else{
+				throw new FalhaPrepareStatement();
+			}
 		}
 		
 		function atualizarTurista(Turista $turista){

@@ -1,8 +1,11 @@
 <?php
 	include_once 'br.ufc.quixada.fbd.repositorios/RepositorioTuristas.class.php';
-	include_once 'br.ufc.quixada.fbd.excecoes/FalhaAoCriarConexao.class.php';
-	include_once 'br.ufc.quixada.fbd.excecoes/FalhaAoExecutarQuery.class.php';
-	include_once 'br.ufc.quixada.fbd.excecoes/PrepareStatementFalha.class.php';
+	include_once 'br.ufc.quixada.fbd.sgbd/FalhaAoCriarConexao.class.php';
+	include_once 'br.ufc.quixada.fbd.repositorios/FalhaAoExecutarQuery.class.php';
+	include_once 'br.ufc.quixada.fbd.repositorios/FalhaPrepareStatement.class.php';
+	include_once 'FalhaAoRemoverTurista.class.php';
+	include_once 'FalhaAoCadastrarTurista.class.php';
+	include_once 'br.ufc.quixada.fbd.repositorios/FalhaTuristaNaoCadastrado.class.php';
 	
 	Class ControladorTuristas{
 		
@@ -13,24 +16,27 @@
 		}
 		
 		function cadastrarTurista(Turista $novoTurista){
-			
 			try {
 				$this->repositorioTuristas->cadastrar($novoTurista);
-			}catch (FalhaAoCriarConexao $e){
-				throw $e;
-			}catch (PrepareStatementFalha $e){
-				throw $e;
-			}catch (FalhaAoExecutarQuery $e){
-				throw $e;
-			}
+			} catch (Exception $e){
+				throw new FalhaAoCadastrarTurista($e);
+			} 
 		}
 		
 		function removerTurista(Turista $turista){
-				
+			try {
+				$this->repositorioTuristas->removerTurista($turista);
+			} catch (Exception $e){
+				throw new FalhaAoRemoverTurista($e);
+			}
 		}
 		
 		function removerTuristaPorId($id_turista){
-			
+			try {
+				$this->repositorioTuristas->removerPorId($id_turista);
+			} catch (Exception $e){
+				throw new FalhaAoRemoverTurista($e);
+			}
 		}
 		
 		function atualizarTurista(Turista $turista){
