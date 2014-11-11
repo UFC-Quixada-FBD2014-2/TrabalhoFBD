@@ -31,28 +31,30 @@
 			}
 		}
 		
-		function removerTuristaPorId($id_turista){
+		
+		function atualizarTurista(Turista $turista){
 			try {
 				$this->repositorioTuristas->removerPorId($id_turista);
 			} catch (Exception $e){
-				throw new FalhaAoRemoverTurista($e);
+				throw new FalhaAoAtualizarTurista($e);
 			}
 		}
 		
-		function atualizarTurista(Turista $turista){
-			
-		}
-		
 		function pegarTuristaPorEmail($email){
-			return new Turista($nome, $email, $senha, $idade);
+			try {
+				return $this->repositorioTuristas->pegarTuristaPorEmail($email);
+			} catch (Exception $e){
+				throw new FalhaAoBuscarTurista($e);
+			}
 		}
 		
-		function pegarTuristaPorId($id_turista){
-			
-		}
 		
 		function pegarTodosOsTuristas(){
-			
+			try {
+				return $this->repositorioTuristas->pegarTodosOsTuristas();
+			} catch (Exception $e){
+				throw new FalhaAoBuscarTurista($e);
+			}
 		}
 		
 	}

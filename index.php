@@ -9,8 +9,8 @@
 
 	
 	try {
-		$controlador->removerTurista($turista);
-	} catch (FalhaAoRemoverTurista $e) {
+		print_r($controlador->pegarTodosOsTuristas());
+	} catch (FalhaAoBuscarTurista $e) {
 		echo $e->getMessage()."<br>".$e->getExceptionInferior()->getMessage();
 	}
 	

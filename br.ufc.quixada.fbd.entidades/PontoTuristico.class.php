@@ -2,7 +2,7 @@
 	Class PontoTuristico{
 		
 		private $id;
-		private $id_categoria;
+		private $tags;
 		private $nome;
 		private $latitude;
 		private $longitude;
@@ -15,12 +15,12 @@
 		private $horario_fechamento;
 		private $preco_entrada;
 		
-		function __construct($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $preco_entrada, $horario_abertura, $horario_fechamento, $id_categoria="", $id=""){
+		function __construct($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $preco_entrada, $horario_abertura, $horario_fechamento, $tags="", $id=""){
 			$this->nome = $nome;
 			$this->cidade = $cidade;
 			$this->estado = $estado;
 			$this->id = $id;
-			$this->id_categoria = $id_categoria;
+			$this->tags = tags;
 			$this->latitude = $latitude;
 			$this->longitude = $longitude;
 			$this->numero = $numero;
@@ -39,12 +39,12 @@
 			$this->id = $id;
 		}
 		
-		public function getIdCategoria(){
-			return $this->id_categoria;
+		public function getTags(){
+			return $this->tags;
 		}
 		
-		public function setIdCategoria($id_categoria){
-			$this->id_categoria = $id_categoria;
+		public function setTags($tags){
+			$this->tags = $tags;
 		}
 		
 		public function getNome(){

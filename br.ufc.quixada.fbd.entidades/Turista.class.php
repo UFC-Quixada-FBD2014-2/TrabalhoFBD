@@ -1,35 +1,26 @@
 <?php
 	Class Turista{
-		private $id;
 		private $categoria;
 		private $nome;
 		private $email;
 		private $senha;
-		private $data_de_nascimento;
+		private $preferencias;
 		
-		function __construct($nome, $email, $senha, $data_de_nascimento, $categoria="", $id=""){
-			$this->categoria = $categoria;
+		function __construct($nome, $email, $senha, $data_de_nascimento, $preferencias=""){
+			$this->preferencias = $preferencias;
 			$this->email = $email;
 			$this->data_de_nascimento = $data_de_nascimento;
-			$this->id = $id;
 			$this->nome = $nome;
 			$this->senha = $senha;
 		}
+
 		
-		public function getId(){
-			return $this->id;
+		public function getPreferencias(){
+			return $this->preferencias;
 		}
 		
-		public function setId($id){
-			$this->id = $id;
-		}
-		
-		public function getCategoria(){
-			return $this->categoria;
-		}
-		
-		public function setCategoria($categoria){
-			$this->categoria = $categoria;
+		public function setPreferencias($preferencias){
+			$this->preferencias = $preferencias;
 		}
 		
 		public function getNome(){
