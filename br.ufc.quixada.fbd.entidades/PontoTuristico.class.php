@@ -14,8 +14,9 @@
 		private $horario_abertura;
 		private $horario_fechamento;
 		private $preco_entrada;
+		private $bairro;
 		
-		function __construct($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $preco_entrada, $horario_abertura, $horario_fechamento, $tags="", $id=""){
+		function __construct($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $bairro, $preco_entrada, $horario_abertura, $horario_fechamento, $tags="", $id=""){
 			$this->nome = $nome;
 			$this->cidade = $cidade;
 			$this->estado = $estado;
@@ -29,6 +30,15 @@
 			$this->horario_abertura = $horario_abertura;
 			$this->horario_fechamento = $horario_fechamento;
 			$this->preco_entrada = $preco_entrada;
+			$this->bairro = $bairro;
+		}
+		
+		public function getBairro(){
+			return $this->bairro;
+		}
+		
+		public function setBairro($bairro){
+			$this->bairro = $bairro;
 		}
 		
 		public function getId(){

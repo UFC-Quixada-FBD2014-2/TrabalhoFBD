@@ -1,3 +1,4 @@
+<?php 
 class ValidacaoDosCampos{
  
     public function estaLogado() {
@@ -16,7 +17,7 @@ class ValidacaoDosCampos{
         if ($email == 'email@gmail.com' && $senha == 'senha') {
             $usuario = new Usuario();
             $usuario->setEmail($email);
-            $usuario->setNome('Nome do usuário');
+            $usuario->setNome('Nome do usuï¿½rio');
             $usuario->setSenha($senha);
  
             $_SESSION['usuario'] = $usuario;
@@ -40,7 +41,7 @@ class ValidacaoDosCampos{
  
     }
  
-    public functionExpulsar() {
+    public function Expulsar() {
         header('location: controle.php?acao=sair');
     }
  

@@ -3,8 +3,6 @@
 	include_once 'br.ufc.quixada.fbd.sgbd/FalhaAoCriarConexao.class.php';
 	include_once 'br.ufc.quixada.fbd.repositorios/FalhaAoExecutarQuery.class.php';
 	include_once 'br.ufc.quixada.fbd.repositorios/FalhaPrepareStatement.class.php';
-	include_once 'FalhaAoRemoverTurista.class.php';
-	include_once 'FalhaAoCadastrarTurista.class.php';
 	include_once 'br.ufc.quixada.fbd.repositorios/FalhaTuristaNaoCadastrado.class.php';
 	
 	Class ControladorTuristas{
