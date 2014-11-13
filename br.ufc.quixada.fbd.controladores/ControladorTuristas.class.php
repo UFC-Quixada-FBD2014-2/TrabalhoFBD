@@ -17,7 +17,7 @@
 			try {
 				$this->repositorioTuristas->cadastrar($novoTurista);
 			} catch (Exception $e){
-				throw new FalhaAoCadastrarTurista($e);
+				echo $e->getMessage();
 			} 
 		}
 		
@@ -25,7 +25,7 @@
 			try {
 				$this->repositorioTuristas->removerTurista($turista);
 			} catch (Exception $e){
-				throw new FalhaAoRemoverTurista($e);
+				echo $e->getMessage();
 			}
 		}
 		
@@ -34,7 +34,7 @@
 			try {
 				$this->repositorioTuristas->removerPorId($id_turista);
 			} catch (Exception $e){
-				throw new FalhaAoAtualizarTurista($e);
+				echo $e->getMessage();
 			}
 		}
 		
@@ -42,7 +42,7 @@
 			try {
 				return $this->repositorioTuristas->pegarTuristaPorEmail($email);
 			} catch (Exception $e){
-				throw new FalhaAoBuscarTurista($e);
+				echo $e->getMessage();
 			}
 		}
 		
@@ -51,7 +51,7 @@
 			try {
 				return $this->repositorioTuristas->pegarTodosOsTuristas();
 			} catch (Exception $e){
-				throw new FalhaAoBuscarTurista($e);
+				echo $e->getMessage();
 			}
 		}
 		

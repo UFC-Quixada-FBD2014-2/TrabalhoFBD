@@ -8,11 +8,13 @@
 	class RepositorioEnderecoPontosTuristicos{
 		private $conexao;
 		
-		public function __construct(Conexao $conexao){
-			$this->conexao = $conexao;
+		public function __construct(){
+			$this->conexao = new Conexao();
 		}
 		
 		public function cadastrarEnderecoPontoTuristico(PontoTuristico $pontoTuristico){
+			$conexao = $this->conexao->abrirConexao();
+			
 			$rua = $pontoTuristico->getRua();
 			$cidade = $pontoTuristico->getCidade();
 			$estado = $pontoTuristico->getEstado();
@@ -22,13 +24,14 @@
 			$idPontoTuristico = $pontoTuristico->getId();
 			
 			$queryName = 'query_cadastrar_endereco_ponto_turistico';
-			$sqlQuery = "INSERT INTO EnderecoPontoTuristico (idPontoTuristico, rua, cidade, estado, pais, numero, bairro) VALUES ($1, $2, $3, $4, $5, $6, $7)";
+			$sqlQuery = "INSERT INTO EnderecoPontoTuristico 
+						(idPontoTuristico, rua, cidade, estado, pais, numero, bairro) 
+						VALUES ($1, $2, $3, $4, $5, $6, $7)";
 				
 			if(pg_prepare($conexao, $queryName, $sqlQuery)){
 				if(pg_execute($conexao, $queryName, array($idPontoTuristico, $rua, $cidade, $estado, $pais, $numero, $bairro))){
-					$this->conexao->fecharConexao();
+					pg_close($conexao);
 				}else{
-					$this->conexao->fecharConexao();
 					throw new FalhaAoExecutarQuery();
 				}
 			}else{
@@ -44,7 +47,7 @@
 			
 			if(pg_prepare($conexao, $queryName, $sqlQuery)){
 				if(pg_execute($conexao, $queryName, array($idPontoTuristico))){
-					$this->conexao->fecharConexao();
+					pg_close($conexao);
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}
@@ -55,7 +58,6 @@
 		
 		public function atualizarEnderecoPontoTuristico(PontoTuristico $pontoTuristico){
 			$conexao = $this->conexao->abrirConexao();
-		
 			
 			$cidade = $pontoTuristico->getCidade();
 			$estado = $pontoTuristico->getEstado();
@@ -66,13 +68,13 @@
 			$bairro =  $pontoTuristico->getBairro();
 		
 			$queryName = 'query_atualizar_endereco_ponto_turistico';
-			$sqlQuery = 'UPDATE EnderecoPontoTuristico SET rua = $1, cidade = $2, estado = $3, pais = $4, numero = $5, bairro = $6
-						WHERE idPontoTuristico = $7';
+			$sqlQuery = 'UPDATE EnderecoPontoTuristico SET rua = $1, cidade = $2, estado = $3,
+						 pais = $4, numero = $5, bairro = $6
+						 WHERE idPontoTuristico = $7';
 		
 			if(pg_prepare($conexao, $queryName, $sqlQuery)){
 				if(pg_execute($conexao, $queryName, array($rua, $cidade, $estado, $pais, $numero, $bairro, $idPontoTuristico))){
-						
-					$this->conexao->fecharConexao();
+					pg_close($conexao);
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}

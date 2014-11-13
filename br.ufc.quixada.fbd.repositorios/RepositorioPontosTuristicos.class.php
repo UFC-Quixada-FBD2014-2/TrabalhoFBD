@@ -13,13 +13,14 @@
 		
 		public function __construct(){
 			$this->conexao = new Conexao();
-			$this->repositorioTagsPontosTuristicos = new RepositorioTagsPontosTuristicos($conexao);
-			$this->repositorioEnderecoPontosTuristicos = new RepositorioEnderecoPontosTuristicos($conexao);
+			$this->repositorioTagsPontosTuristicos = new RepositorioTagsPontosTuristicos();
+			$this->repositorioEnderecoPontosTuristicos = new RepositorioEnderecoPontosTuristicos();
 		}
 		
 		public function cadastrar(PontoTuristico $novoPontoTuristico){
 			$conexao = $this->conexao->abrirConexao();
-				
+			
+			
 			$nome = $novoPontoTuristico->getNome();
 			$latitude = $$novoPontoTuristico->getLatitude();
 			$longitude = $novoPontoTuristico->getLongitude();
@@ -35,7 +36,7 @@
 			
 			if(pg_prepare($conexao, $queryName, $sqlQuery)){
 				if($idPontoTuristico = pg_execute($conexao, $queryName, array($nome, $latitude, $longitude, $precoEntrada, $horarioAbertura, $horarioFechamento))){
-					$this->conexao->fecharConexao();
+					pg_close($conexao);
 					$this->repositorioEnderecoPontosTuristicos->cadastrarEnderecoPontoTuristico($novoPontoTuristico);
 					$this->repositorioTagsPontosTuristicos->cadastrarTagsPontoTuristico($novoPontoTuristico);
 					$novoPontoTuristico->setId($idPontoTuristico);
@@ -49,7 +50,7 @@
 		
 		public function remover(PontoTuristico $pontoTuristico){
 			$conexao = $this->conexao->abrirConexao();
-		
+			
 			$idPontoTuristico = $$pontoTuristico->getId();
 			if($idPontoTuristico == null){
 				throw new FalhaPontoTuristicoNaoCadastrado();
@@ -60,7 +61,7 @@
 				
 			if(pg_prepare($conexao, $queryName, $sqlQuery)){
 				if(pg_execute($conexao, $queryName, array($idPontoTuristico))){
-					$this->conexao->fecharConexao();
+					pg_close($conexao);
 					$this->repositorioTagsPontosTuristicos->removerTagsPontoTuristico($idPontoTuristico);
 					$this->repositorioEnderecoPontosTuristicos->removerEnderecoPontoTuristico($idPontoTuristico);
 				}else{
@@ -73,7 +74,7 @@
 		
 		public function atualizar(PontoTuristico $pontoTuristico){
 			$conexao = $this->conexao->abrirConexao();
-		
+			
 			$nome = $pontoTuristico->getNome();
 			$latitude = $pontoTuristico->getLatitude();
 			$longitude = $pontoTuristico->getLongitude();
@@ -90,7 +91,7 @@
 			if(pg_prepare($conexao, $queryName, $sqlQuery)){
 				if(pg_execute($conexao, $queryName, array($nome, $latitude, $longitude, $precoEntrada, $horarioAbertura, $horarioFechamento, $idPontoTuristico))){
 					
-					$this->conexao->fecharConexao();
+					pg_close($conexao);
 					$this->repositorioTagsPontosTuristicos->removerTagsPontoTuristico($idPontoTuristico);
 					$this->repositorioTagsPontosTuristicos->cadastrarTagsPontoTuristico($turista);
 					$this->repositorioEnderecoPontosTuristicos->atualizarEnderecoPontoTuristico($pontoTuristico);
@@ -106,7 +107,7 @@
 		
 		public function pegarPontoTuristicoPorId($idPontoTuristico){
 			$conexao = $this->conexao->abrirConexao();
-		
+			
 			$queryName = 'query_pegar_ponto_turistico_por_id';
 			$sqlQuery = 'SELECT * 
 							FROM PontoTuristico PT, EnderecoPontoTuristico EPT 
@@ -133,7 +134,7 @@
 						
 					$pontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $preco_entrada, $horario_abertura, $horario_fechamento, $tags, $idPontoTuristico);
 						
-					$this->conexao->fecharConexao();
+					pg_close($conexao);
 					return $turista;
 				}else{
 					throw new FalhaAoExecutarQuery();
@@ -145,7 +146,7 @@
 		
 		public function pegarTodosOsPontosTuristicos(){
 			$conexao = $this->conexao->abrirConexao();
-		
+			
 			$queryName = 'query_pegar_todos_os_pontos_turisticos';
 			$sqlQuery = 'SELECT * 
 							FROM PontoTuristico PT, EnderecoPontoTuristico EPT 
@@ -177,7 +178,7 @@
 						array_push($pontosTuristicos, $pontoTuristico);
 					}
 						
-					$this->conexao->fecharConexao();
+					pg_close($conexao);
 					return $pontosTuristicos;
 		
 				}else{
@@ -224,7 +225,7 @@
 						array_push($pontosTuristicos, $pontoTuristico);
 					}
 			
-					$this->conexao->fecharConexao();
+					pg_close($conexao);
 					return $pontosTuristicos;
 			
 				}else{
