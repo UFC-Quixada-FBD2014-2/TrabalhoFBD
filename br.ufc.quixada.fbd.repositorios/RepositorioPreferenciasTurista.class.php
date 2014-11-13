@@ -8,29 +8,26 @@
 		private $conexao;
 		
 		public function __construct(){
-			$this->conexao = new Conexao();
+			$conexao = new Conexao();
+			$this->conexao = $conexao->abrirConexao();
 		}
 		
 		public function pegarPreferenciasTurista($email){
-			$conexao = $this->conexao->abrirConexao();
 			
 			
-			$queryName = 'query_pegar_preferencias';
-			$sqlQuery = 'SELECT * FROM PreferenciaDeTurista WHERE emailTurista = $1';
+			$sqlQuery = 'SELECT * FROM PreferenciaDeTurista WHERE emailTurista = ?';
 		
-			if($stmt = pg_prepare($conexao, $queryName, $sqlQuery)){
-				$result = @pg_execute($conexao, $queryName, array($email));
-				if($result){
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $email);
+				if($stmt->execute()){
 					$preferencias = Array();
-					
-					while($resultado = pg_fetch_array($result)){
+					$resultados = $stmt->fetchAll();
+					foreach ($resultados as $resultado){
 						$preferencia = $resultado['nome'];
 							
 						array_push($preferencias, $preferencia);
 					}
 					
-					pg_close($conexao);
-					$this->conexao->fecharConexao();
 					return $preferencias;
 						
 				}else{
@@ -42,14 +39,13 @@
 		}
 		
 		public function removerPreferenciasTurista($email){
-			$conexao = $this->conexao->abrirConexao();
 			
-			$queryName = 'query_remover_preferencias';
-			$sqlQuery = 'DELETE FROM PreferenciaDeTurista WHERE emailTurista = $1';
+			$sqlQuery = 'DELETE FROM PreferenciaDeTurista WHERE emailTurista = ?';
 		
-			if(pg_prepare($conexao, $queryName, $sqlQuery)){
-				if(pg_execute($conexao, $queryName, array($email))){
-					pg_close($conexao);
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $email);
+				
+				if($stmt->execute()){
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}
@@ -59,18 +55,20 @@
 		}
 		
 		public function cadastrarPreferenciasTurista(Turista $turista){
-			$conexao = $this->conexao->abrirConexao();
 			
 			$preferencias = $turista->getPreferencias();
 			$email = $turista->getEmail();
 				
-			$queryName = 'query_cadastrar_preferencias';
-			$sqlQuery = 'INSERT INTO PreferenciaDeTurista(emailTurista, nome) VALUES ($1, $2)';
+			$sqlQuery = 'INSERT INTO PreferenciaDeTurista(emailTurista, nome) VALUES (?, ?)';
 		
 			for($i=0; $i<count($preferencias); $i++){
-				if(pg_prepare($conexao, $queryName, $sqlQuery)){
-					if(pg_execute($conexao, $queryName, array($email, $preferencias[$i]))){
-						pg_close($conexao);
+				
+				if($stmt = $this->conexao->prepare($sqlQuery)){
+					$stmt->bindParam(1, $email);
+					$stmt->bindParam(2, $preferencias[$i]);
+					
+					if($stmt->execute()){
+						
 					}else{
 						throw new FalhaAoExecutarQuery();
 					}

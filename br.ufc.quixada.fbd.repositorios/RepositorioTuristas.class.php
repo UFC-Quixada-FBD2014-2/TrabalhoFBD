@@ -12,25 +12,28 @@
 		private $repositorioPreferenciasTurista;
 		
 		public function __construct(){
-			$this->conexao = new Conexao();
+			$conexao = new Conexao();
+			$this->conexao = $conexao->abrirConexao();
 			$this->repositorioPreferenciasTurista = new RepositorioPreferenciasTurista();
 		}
 		
 		public function cadastrar(Turista $novoTurista){
-			$conexao = $this->conexao->abrirConexao();
 			
 			$nome = $novoTurista->getNome();
 			$dataDeNascimento = $novoTurista->getDataDeNascimento();
 			$senha = $novoTurista->getSenha();
 			$email = $novoTurista->getEmail();
 			
-			$queryName = 'query_cadastrar_turista';
-			$sqlQuery = 'INSERT INTO Turista (email, nome, dataDeNascimento, senha) VALUES ($1, $2, $3, $4)';
+			$sqlQuery = 'INSERT INTO Turista (email, nome, dataDeNascimento, senha) VALUES (?, ?, ?, ?)';
 			
-			if(pg_prepare($conexao, $queryName, $sqlQuery)){
-				if(pg_execute($conexao, $queryName, array($email, $nome, $dataDeNascimento, $senha))){
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $email);
+				$stmt->bindParam(2, $nome);
+				$stmt->bindParam(3, $dataDeNascimento);
+				$stmt->bindParam(4, $senha);
+				
+				if($stmt->execute()){
 					$this->repositorioPreferenciasTurista->cadastrarPreferenciasTurista($novoTurista);
-					pg_close($conexao);
 				}else{
 					throw new FalhaAoExecutarQuery();	
 				}
@@ -40,20 +43,20 @@
 		}
 		
 		public function removerTurista(Turista $turista){
-			$conexao = $this->conexao->abrirConexao();
 			
 			$email = $turista->getEmail();
+			
 			if($email == null){
 				throw new FalhaTuristaNaoCadastrado();
 			}
 			
-			$queryName = 'query_remover_turista';
-			$sqlQuery = 'DELETE FROM Turista WHERE email = $1';
+			$sqlQuery = 'DELETE FROM Turista WHERE email = ?';
 			
-			if(pg_prepare($conexao, $queryName, $sqlQuery)){
-				if(pg_execute($conexao, $queryName, array($email))){
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $email);
+				
+				if($stmt->execute()){
 					$this->repositorioPreferenciasTurista->removerPreferenciasTurista($email);
-					pg_close($conexao);
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}
@@ -63,21 +66,23 @@
 		}
 		
 		public function atualizarTurista(Turista $turista){
-			$conexao = $this->conexao->abrirConexao();
 			
 			$nome = $turista->getNome();
 			$dataDeNascimento = $turista->getDataDeNascimento();
 			$senha = $turista->getSenha();
 			$email = $turista->getEmail();
 				
-			$queryName = 'query_atualizar_turista';
-			$sqlQuery = 'UPDATE Turista SET nome = $1, dataDeNascimento = $2, senha = $3, email = $4 WHERE email = $5';
+			$sqlQuery = 'UPDATE Turista SET nome = ?, dataDeNascimento = ?, senha = ? WHERE email = ?';
 			
-			if(pg_prepare($conexao, $queryName, $sqlQuery)){
-				if(pg_execute($conexao, $queryName, array( $nome, $dataDeNascimento, $senha, $email, $email))){
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $nome);
+				$stmt->bindParam(2, $dataDeNascimento);
+				$stmt->bindParam(3, $senha);
+				$stmt->bindParam(4, $email);
+				
+				if($stmt->execute()){
 					$this->repositorioPreferenciasTurista->removerPreferenciasTurista($email);
 					$this->repositorioPreferenciasTurista->cadastrarPreferenciasTurista($turista);
-					pg_close($conexao);
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}
@@ -87,25 +92,24 @@
 		}
 		
 		public function pegarTuristaPorEmail($email){
-			$conexao = $this->conexao->abrirConexao();
 			
-			$queryName = 'query_pegar_turista_por_email';
-			$sqlQuery = 'SELECT * FROM Turista WHERE email = $1 LIMIT 1';
+			$sqlQuery = 'SELECT * FROM Turista WHERE email = ? LIMIT 1';
 			
-			if(pg_prepare($conexao, $queryName, $sqlQuery)){
-				$result = @pg_execute($conexao, $queryName, array($email));
-				if($result){
-					$resultado = pg_fetch_array($result);
-					$nome = $resultado['nome'];
-					$email = $resultado['email'];
-					$senha = $resultado['senha'];
-					$data_de_nascimento = $resultado['datadenascimento'];
-					$preferencias = $this->repositorioPreferenciasTurista->pegarPreferenciasTurista($email);
-					
-					$turista = new Turista($nome, $email, $senha, $data_de_nascimento, $preferencias);
-					
-					pg_close($conexao);
-					return $turista;
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $email);
+				if($stmt->execute()){
+					$resultado = $stmt->fetch();
+					if($resultado){
+						$nome = $resultado['nome'];
+						$email = $resultado['email'];
+						$senha = $resultado['senha'];
+						$data_de_nascimento = $resultado['datadenascimento'];
+						$preferencias = $this->repositorioPreferenciasTurista->pegarPreferenciasTurista($email);
+						
+						$turista = new Turista($nome, $email, $senha, $data_de_nascimento, $preferencias);
+						
+						return $turista;
+					}
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}
@@ -116,17 +120,14 @@
 		
 		
 		public function pegarTodosOsTuristas(){
-			$conexao = $this->conexao->abrirConexao();
 			
-			$queryName = 'query_pegar_todos_os_turistas';
 			$sqlQuery = 'SELECT * FROM Turista';
 			
-			if(pg_prepare($conexao, $queryName, $sqlQuery)){
-				$result = @pg_execute($conexao, $queryName, array());
-				if($result){
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				if($stmt->execute()){
 					$turistas = Array();
-					
-					while($resultado = pg_fetch_array($result)){
+					$resultados = $stmt->fetchAll();
+					foreach ($resultados as $resultado){
 						$nome = $resultado['nome'];
 						$email = $resultado['email'];
 						$senha = $resultado['senha'];
@@ -139,7 +140,6 @@
 					}
 					
 					
-					$this->conexao->fecharConexao();
 					
 					return $turistas;
 						

@@ -7,25 +7,27 @@
 	class RepositorioVisitas{
 		private $conexao;
 		
-		public function __construct(Conexao $conexao){
-			$this->conexao = $conexao;
+		public function __construct(){
+			$conexao = new Conexao();
+			$this->conexao = $conexao->abrirConexao();
 		}
 		
 		public function cadastrar(Visita $visita){
-			$conexao = $this->conexao->abrirConexao();
 			
 			$idPontoTuristico = $visita->getIdPontoTuristico();
 			$emailTurista = $visita->getEmailTurista();
 			$data = $visita->getData();
 			
-			$queryName = 'query_cadastrar_visita';
 			$sqlQuery = "INSERT INTO
 							Visitas (idPontoTuristico, emailTurista, data)
-							VALUES ($1, $2, $3)";
-				
-			if(pg_prepare($conexao, $queryName, $sqlQuery)){
-				if(pg_execute($conexao, $queryName, array($idPontoTuristico, $emailTurista, $data))){
-					pg_close($conexao);
+							VALUES (?, ?, ?)";
+			
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $idPontoTuristico);
+				$stmt->bindParam(2, $emailTurista);
+				$stmt->bindParam(3, $data);
+				if($stmt->execute()){
+					
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}

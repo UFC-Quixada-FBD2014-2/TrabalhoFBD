@@ -9,11 +9,11 @@
 		private $conexao;
 		
 		public function __construct(){
-			$this->conexao = new Conexao();
+			$conexao = new Conexao();
+			$this->conexao = $conexao->abrirConexao();
 		}
 		
 		public function cadastrarEnderecoPontoTuristico(PontoTuristico $pontoTuristico){
-			$conexao = $this->conexao->abrirConexao();
 			
 			$rua = $pontoTuristico->getRua();
 			$cidade = $pontoTuristico->getCidade();
@@ -23,14 +23,21 @@
 			$bairro = $pontoTuristico->getBairro();
 			$idPontoTuristico = $pontoTuristico->getId();
 			
-			$queryName = 'query_cadastrar_endereco_ponto_turistico';
 			$sqlQuery = "INSERT INTO EnderecoPontoTuristico 
 						(idPontoTuristico, rua, cidade, estado, pais, numero, bairro) 
-						VALUES ($1, $2, $3, $4, $5, $6, $7)";
+						VALUES (?, ?, ?, ?, ?, ?, ?)";
 				
-			if(pg_prepare($conexao, $queryName, $sqlQuery)){
-				if(pg_execute($conexao, $queryName, array($idPontoTuristico, $rua, $cidade, $estado, $pais, $numero, $bairro))){
-					pg_close($conexao);
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $idPontoTuristico);
+				$stmt->bindParam(2, $rua);
+				$stmt->bindParam(3, $cidade);
+				$stmt->bindParam(4, $estado);
+				$stmt->bindParam(5, $pais);
+				$stmt->bindParam(6, $numero);
+				$stmt->bindParam(7, $bairro);
+				
+				if($stmt->execute()){
+
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}
@@ -40,14 +47,14 @@
 		}
 		
 		public function removerEnderecoPontoTuristico($idPontoTuristico){
-			$conexao = $this->conexao->abrirConexao();
 			
-			$queryName = 'query_remover_ponto_turistico';
-			$sqlQuery = 'DELETE FROM EnderecoPontoTuristico WHERE idPontoTuristico = $1';
+			$sqlQuery = 'DELETE FROM EnderecoPontoTuristico WHERE idPontoTuristico = ?';
 			
-			if(pg_prepare($conexao, $queryName, $sqlQuery)){
-				if(pg_execute($conexao, $queryName, array($idPontoTuristico))){
-					pg_close($conexao);
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $sqlQuery);
+				
+				if($stmt->execute()){
+					
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}
@@ -57,7 +64,6 @@
 		}
 		
 		public function atualizarEnderecoPontoTuristico(PontoTuristico $pontoTuristico){
-			$conexao = $this->conexao->abrirConexao();
 			
 			$cidade = $pontoTuristico->getCidade();
 			$estado = $pontoTuristico->getEstado();
@@ -67,14 +73,21 @@
 			$idPontoTuristico = $pontoTuristico->getId();
 			$bairro =  $pontoTuristico->getBairro();
 		
-			$queryName = 'query_atualizar_endereco_ponto_turistico';
-			$sqlQuery = 'UPDATE EnderecoPontoTuristico SET rua = $1, cidade = $2, estado = $3,
-						 pais = $4, numero = $5, bairro = $6
-						 WHERE idPontoTuristico = $7';
+			$sqlQuery = 'UPDATE EnderecoPontoTuristico SET rua = ?, cidade = ?, estado = ?,
+						 pais = ?, numero = ?, bairro = ?
+						 WHERE idPontoTuristico = ?';
 		
-			if(pg_prepare($conexao, $queryName, $sqlQuery)){
-				if(pg_execute($conexao, $queryName, array($rua, $cidade, $estado, $pais, $numero, $bairro, $idPontoTuristico))){
-					pg_close($conexao);
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				
+				$stmt->bindParam(1, $rua);
+				$stmt->bindParam(2, $cidade);
+				$stmt->bindParam(3, $estado);
+				$stmt->bindParam(4, $pais);
+				$stmt->bindParam(5, $numero);
+				$stmt->bindParam(6, $bairro);
+				$stmt->bindParam(7, $idPontoTuristico);
+				
+				if($stmt->execute()){
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}

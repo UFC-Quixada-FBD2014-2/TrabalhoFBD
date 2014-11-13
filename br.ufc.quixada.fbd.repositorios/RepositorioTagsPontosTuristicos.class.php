@@ -8,29 +8,27 @@
 		private $conexao;
 		
 		public function __construct(){
-			$this->conexao = new Conexao();
+			$conexao = new Conexao();
+			$this->conexao = $conexao->abrirConexao();
 		}
 		
 		public function pegarTagsPontoTuristico($idPontoTuristico){
-			$conexao = $this->conexao->abrirConexao();
 			
-			$queryName = 'query_pegar_todas_as_tags';
 			$sqlQuery = 'SELECT * 
 						 FROM TagsDePontoTuristico
-					 	 WHERE idPontoTuristico = $1';
+					 	 WHERE idPontoTuristico = ?';
 		
-			if(pg_prepare($conexao, $queryName, $sqlQuery)){
-				$result = @pg_execute($conexao, $queryName, array($idPontoTuristico));
-				if($result){
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $idPontoTuristico);
+				if($stmt->execute()){
 					$tags = Array();
 		
-					while($resultado = pg_fetch_array($result)){
+					while($resultado = $stmt->fetchAll()){
 						$tag = $resultado['nome'];
 							
 						array_push($tags, $tag);
 					}
 		
-					pg_close($conexao);
 					return $tags;
 		
 				}else{
@@ -42,15 +40,14 @@
 		}
 		
 		public function removerTagsPontoTuristico($idPontoTuristico){
-			$conexao = $this->conexao->abrirConexao();
 			
-			$queryName = 'query_remover_tags';
 			$sqlQuery = 'DELETE FROM TagsDePontoTuristico 
-						 WHERE idPontoTuristico = $1';
+						 WHERE idPontoTuristico = ?';
 		
-			if(pg_prepare($conexao, $queryName, $sqlQuery)){
-				if(pg_execute($conexao, $queryName, array($idPontoTuristico))){
-					pg_close($conexao);
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $idPontoTuristico);
+				if($stmt->execute()){
+					
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}
@@ -60,20 +57,20 @@
 		}
 		
 		public function cadastrarTagsPontoTuristico(PontoTuristico $pontoTuristico){
-			$conexao = $this->conexao->abrirConexao();
 		
 			$tags = $pontoTuristico->getTags();
 			$idPontoTuristico = $pontoTuristico->getId();
 				
-			$queryName = 'query_cadastrar_preferencias';
 			$sqlQuery = 'INSERT INTO TagsDePontoTuristico 
-						(idPontoTuristico, nome) VALUES ($1, $2)';
+						(idPontoTuristico, nome) VALUES (?, ?)';
 		
 			for($i=0; $i<count($tags); $i++){
-				if(pg_prepare($conexao, $queryName, $sqlQuery)){
-					if(pg_execute($conexao, $queryName, array($idPontoTuristico, $tags[i]))){
+				if($stmt = $this->conexao->prepare($sqlQuery)){
+					$stmt->bindParam(1, $idPontoTuristico);
+					$stmt->bindParam(2, $tags[$i]);
+					
+					if($stmt->execute()){
 						
-						pg_close($conexao);
 					}else{
 						throw new FalhaAoExecutarQuery();
 					}
