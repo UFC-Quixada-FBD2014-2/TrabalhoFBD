@@ -13,36 +13,75 @@
 			$this->repositorioTuristas = new RepositorioTuristas();
 		}
 		
-		function cadastrarTurista(Turista $novoTurista){
-			try {
-				$this->repositorioTuristas->cadastrar($novoTurista);
-			} catch (Exception $e){
-				echo $e->getMessage();
-			} 
+		function cadastrarTurista(){
+			if(isset($_POST['nome'], $_POST['senha'], $_POST['dataDeNascimento'], $_POST['preferencias'], $_POST['email'])){
+				$nome = $_POST['nome'];
+				$senha = $_POST['senha'];
+				$dataDeNascimento = $_POST['dataDeNascimento'];
+				$preferencias = $_POST['preferencias'];
+				$email = $_POST['email'];
+				
+				$novoTurista = new Turista($nome, $email, $senha, $data_de_nascimento, $preferencias);
+				
+				try {
+					$this->repositorioTuristas->cadastrar($novoTurista);
+					return ConstantesMensagensFeedback::SUCESSO;
+				} catch (Exception $e){
+					return ConstantesMensagensFeedback::FALHA_NO_BANCO;
+				} 
+			}else{
+				return ConstantesMensagensFeedback::FALHA_NOS_PARAMETROS;
+			}
 		}
 		
-		function removerTurista(Turista $turista){
-			try {
-				$this->repositorioTuristas->removerTurista($turista);
-			} catch (Exception $e){
-				echo $e->getMessage();
+		function removerTurista(){
+			if(isset($_POST['email'])){
+				try {
+					
+					$email = $_POST['email'];
+					
+					$this->repositorioTuristas->removerTurista($email);
+					return ConstantesMensagensFeedback::SUCESSO;
+				} catch (Exception $e){
+					return ConstantesMensagensFeedback::FALHA_NO_BANCO;
+				}
+			}else{
+				return ConstantesMensagensFeedback::FALHA_NOS_PARAMETROS;
 			}
 		}
 		
 		
-		function atualizarTurista(Turista $turista){
-			try {
-				$this->repositorioTuristas->removerPorId($id_turista);
-			} catch (Exception $e){
-				echo $e->getMessage();
+		function atualizarTurista(){
+			if(isset($_POST['nome'], $_POST['senha'], $_POST['dataDeNascimento'], $_POST['preferencias'], $_POST['email'])){
+				$nome = $_POST['nome'];
+				$senha = $_POST['senha'];
+				$dataDeNascimento = $_POST['dataDeNascimento'];
+				$preferencias = $_POST['preferencias'];
+				$email = $_POST['email'];
+			
+				$novoTurista = new Turista($nome, $email, $senha, $data_de_nascimento, $preferencias);
+				try {
+					$this->repositorioTuristas->removerPorId($id_turista);
+					return ConstantesMensagensFeedback::SUCESSO;
+				} catch (Exception $e){
+					return ConstantesMensagensFeedback::FALHA_NO_BANCO;
+				}
+			}else{
+				return ConstantesMensagensFeedback::FALHA_NOS_PARAMETROS;
 			}
 		}
 		
-		function pegarTuristaPorEmail($email){
-			try {
-				return $this->repositorioTuristas->pegarTuristaPorEmail($email);
-			} catch (Exception $e){
-				echo $e->getMessage();
+		function pegarTuristaPorEmail(){
+			if(isset($_POST['email'])){
+				$email = $_POST['email'];
+				
+				try {
+					return $this->repositorioTuristas->pegarTuristaPorEmail($email);
+				} catch (Exception $e){
+					return ConstantesMensagensFeedback::FALHA_NO_BANCO;
+				}
+			}else{
+				return ConstantesMensagensFeedback::FALHA_NOS_PARAMETROS;
 			}
 		}
 		
@@ -51,9 +90,28 @@
 			try {
 				return $this->repositorioTuristas->pegarTodosOsTuristas();
 			} catch (Exception $e){
-				echo $e->getMessage();
+				return ConstantesMensagensFeedback::FALHA_NO_BANCO;
 			}
 		}
 		
+	}
+	
+	$acao = $_POST['acao'];
+	$controlador = new ControladorTuristas();
+	if($acao == "cadastrar"){
+		$retorno = $controlador->cadastrarTurista();
+		if($retorno == ConstantesMensagensFeedback::SUCESSO){
+			//TODO: modificar tela
+		}
+	}else if($acao == "remover"){
+		$controlador->removerTurista();
+	}else if($acao == "atualizar"){
+		$controlador->atualizarTurista();
+	}else if($acao == "pegar_turista_email"){
+		$controlador->pegarTuristaPorEmail();
+	}else if($acao == "pegar_todos_turistas"){
+		$controlador->pegarTodosOsTuristas();
+	}else{
+	
 	}
 ?>

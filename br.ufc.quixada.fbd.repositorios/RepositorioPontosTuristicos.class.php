@@ -52,12 +52,9 @@
 			}
 		}
 		
-		public function remover(PontoTuristico $pontoTuristico){
+		public function remover($idPontoTuristico){
 			
-			$idPontoTuristico = $$pontoTuristico->getId();
-			if($idPontoTuristico == null){
-				throw new FalhaPontoTuristicoNaoCadastrado();
-			}
+			
 			$sqlQuery = 'DELETE FROM PontoTuristico WHERE idPontoTuristico = $1';
 				
 			if($stmt = $this->conexao->prepare($sqlQuery)){

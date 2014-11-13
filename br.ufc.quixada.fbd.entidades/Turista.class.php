@@ -1,6 +1,6 @@
 <?php
 	Class Turista{
-		private $categoria;
+		
 		private $nome;
 		private $email;
 		private $senha;

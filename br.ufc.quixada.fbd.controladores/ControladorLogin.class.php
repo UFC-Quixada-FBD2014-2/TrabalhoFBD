@@ -43,7 +43,7 @@
 			}
 		}
 		
-		function checarLogin(Tursita $turista){
+		function checarLogin(Turista $turista){
 			if(isset($_SESSION['user_id'], $_SESSION['email'], $_SESSION['login_string'])){
 				
 				if($turista != null){
