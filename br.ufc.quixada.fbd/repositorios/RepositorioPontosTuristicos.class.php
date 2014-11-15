@@ -5,6 +5,7 @@
 	include_once 'RepositorioEnderecoPontosTuristicos.class.php';
 	include_once __DIR__.'/../sgbd/FalhaAoCriarConexao.class.php';
 	include_once 'FalhaAoExecutarQuery.class.php';
+	include_once __DIR__.'/../entidades/PontoTuristico.class.php';
 	
 	Class RepositorioPontosTuristicos{
 		private $conexao;
@@ -167,7 +168,7 @@
 		
 		public function pegarTodosOsPontosTuristicos(){
 			
-			$sqlQuery = 'SELECT * 
+			$sqlQuery = 'SELECT *
 							FROM PontoTuristico PT, EnderecoPontoTuristico EPT 
 							WHERE EPT.idPontoTuristico = PT.idPontoTuristico';
 				
@@ -179,21 +180,21 @@
 					$resultados = $stmt->fetchAll();
 					foreach ($resultados as $resultado){
 						
-						$idPontoTuristico = $resultado['PT.idPontoTuristico'];
+						$idPontoTuristico = $resultado['idpontoturistico'];
 						$nome = $resultado['nome'];
-						$latitude = $resultado['latutude'];
+						$latitude = $resultado['latitude'];
 						$longitude = $resultado['longitude'];
 						$cidade = $resultado['cidade'];
 						$estado = $resultado['estado'];
 						$pais = $resultado['pais'];
 						$rua = $resultado['rua'];
 						$numero = $resultado['numero'];
-						$preco_entrada = $resultado['precoEntrada'];
-						$horario_abertura = $resultado['horarioAbertura'];
-						$horario_fechamento = $resultado['horarioFechamento'];
+						$precoEntrada = $resultado['precodaentrada'];
+						$horarioAbertura = $resultado['horarioabertura'];
+						$horarioFechamento = $resultado['horariofechamento'];
 						$tags = $this->repositorioTagsPontosTuristicos->pegarTagsPontoTuristico($idPontoTuristico);
 						
-						$pontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $preco_entrada, $horario_abertura, $horario_fechamento, $tags, $idPontoTuristico);
+						$pontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $precoEntrada, $horarioAbertura, $horarioFechamento, $tags, $idPontoTuristico);
 						
 						array_push($pontosTuristicos, $pontoTuristico);
 					}

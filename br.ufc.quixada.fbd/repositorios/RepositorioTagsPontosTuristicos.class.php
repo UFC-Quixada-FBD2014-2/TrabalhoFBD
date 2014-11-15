@@ -22,8 +22,8 @@
 				$stmt->bindParam(1, $idPontoTuristico);
 				if($stmt->execute()){
 					$tags = Array();
-		
-					while($resultado = $stmt->fetchAll()){
+					$resultados = $stmt->fetchAll();
+					foreach ($resultados as $resultado){
 						$tag = $resultado['nome'];
 							
 						array_push($tags, $tag);
