@@ -1,11 +1,13 @@
 <?php
 	include_once 'FalhaAoRealizarLogin.class.php';
+	include_once __DIR__.'/../repositorios/RepositorioTuristas.class.php';
+	include_once __DIR__.'/../enumeration/ConstantesMensagensFeedback.class.php';
 	
 	Class ControladorLogin{
-		private $controladorTuristas;
+		private $repositorioTuristas;
 		
 		function __construct(){
-			$this->controladorTuristas = new ControladorTuristas();
+			$this->repositorioTuristas = new RepositorioTuristas();
 		}
 		
 		function iniciarSessao(){
@@ -20,11 +22,16 @@
 			session_regenerate_id(true);
 		}
 		
-		function realizarLogin($email, $senha){
+		function realizarLogin(){
+			
+			$email = $_POST['email'];
+			$senha = $_POST['senha'];
+			$senha = hash('sha512', $senha);
+			
 			try{
-				$turista = $this->controladorTuristas->pegarTuristaPorEmail($email);
+				$turista = $this->repositorioTuristas->pegarTuristaPorEmail($email);
 			} catch (FalhaAoBuscarTurista $e){
-				throw FalhaAoRealizarLogin();
+				throw new FalhaAoRealizarLogin();
 			}
 				
 			if($turista != null){
@@ -43,28 +50,44 @@
 			}
 		}
 		
-		function checarLogin(Turista $turista){
-			if(isset($_SESSION['user_id'], $_SESSION['email'], $_SESSION['login_string'])){
-				
-				if($turista != null){
-					$id_user = $_SESSION['user_id'];
-					$login_string = $_SESSION['login_string'];
-					$email = $_SESSION['email'];
-					$ip_address = $_SERVER['REMOTE_ADDR'];
-					$user_browser = $_SERVER['HTTP_USER_AGENT'];
+		function checarLogin(){
+			
+			if(isset($_SESSION['username'])){
+				 
+				$email = $_SESSION['username']; 
+				$turista = $this->repositorioTuristas->pegarTuristaPorEmail($email);
+			
+				if($turista != null){ 
+					if(isset($_SESSION['user_id'], $_SESSION['email'], $_SESSION['login_string'])){
 					
-					$senha = $turista->getSenha();
-					$login_check = hash('sha512', $senha.$ip_address.$user_browser);
-					
-					if($login_check == $login_string){
-						return true;
+						if($turista != null){
+							$id_user = $_SESSION['user_id'];
+							$login_string = $_SESSION['login_string'];
+							$email = $_SESSION['email'];
+							$ip_address = $_SERVER['REMOTE_ADDR'];
+							$user_browser = $_SERVER['HTTP_USER_AGENT'];
+								
+							$senha = $turista->getSenha();
+							$login_check = hash('sha512', $senha.$ip_address.$user_browser);
+								
+							if($login_check == $login_string){
+								return true;
+							}
+						}else{
+							return false;
+						}
+					}else{
+						return false;
 					}
-				}else{
+				}
+				 
+				else{   
 					return false;
 				}
-			}else{
-				return false;
 			}
+			
+			else
+				return false;
 		}
 	}
 ?>

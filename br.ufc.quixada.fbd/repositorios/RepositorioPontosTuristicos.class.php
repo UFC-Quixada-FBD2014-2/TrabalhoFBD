@@ -1,9 +1,9 @@
 <?php
-	include_once 'br.ufc.quixada.fbd.sgbd/Conexao.class.php';
+	include_once __DIR__.'/../sgbd/Conexao.class.php';
 	include_once 'FalhaPrepareStatement.class.php';
 	include_once 'RepositorioTagsPontosTuristicos.class.php';
 	include_once 'RepositorioEnderecoPontosTuristicos.class.php';
-	include_once 'br.ufc.quixada.fbd.sgbd/FalhaAoCriarConexao.class.php';
+	include_once __DIR__.'/../sgbd/FalhaAoCriarConexao.class.php';
 	include_once 'FalhaAoExecutarQuery.class.php';
 	
 	Class RepositorioPontosTuristicos{

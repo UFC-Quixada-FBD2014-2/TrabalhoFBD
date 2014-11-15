@@ -1,9 +1,10 @@
 <?php
-	include_once 'br.ufc.quixada.fbd.repositorios/RepositorioPontosTuristicos.class.php';
-	include_once 'br.ufc.quixada.fbd.sgbd/FalhaAoCriarConexao.class.php';
-	include_once 'br.ufc.quixada.fbd.repositorios/FalhaAoExecutarQuery.class.php';
-	include_once 'br.ufc.quixada.fbd.repositorios/FalhaPrepareStatement.class.php';
-	include_once 'br.ufc.quixada.fbd.repositorios/FalhaPontoTuristicoNaoCadastrado.class.php';
+	include_once __DIR__.'/../repositorios/RepositorioPontosTuristicos.class.php';
+	include_once __DIR__.'/../sgbd/FalhaAoCriarConexao.class.php';
+	include_once __DIR__.'/../repositorios/FalhaAoExecutarQuery.class.php';
+	include_once __DIR__.'/../repositorios/FalhaPrepareStatement.class.php';
+	include_once __DIR__.'/../enumeration/ConstantesMensagensFeedback.class.php';
+	include_once __DIR__.'/../repositorios/FalhaPontoTuristicoNaoCadastrado.class.php';
 
 	Class ControladorPontosTuristicos{
 		
@@ -131,24 +132,26 @@
 		
 	}
 	
-	$acao = $_POST['acao'];
-	$controlador = new ControladorPontosTuristicos();
-	if($acao == "cadastrar"){
-		$retorno = $controlador->cadastrarPontoTuristico();
-		if($retorno == ConstantesMensagensFeedback::SUCESSO){
-			//TODO: modificar tela
+	if(isset($_POST['acao'])){
+		$acao = $_POST['acao'];
+		$controlador = new ControladorPontosTuristicos();
+		if($acao == "cadastrar"){
+			$retorno = $controlador->cadastrarPontoTuristico();
+			if($retorno == ConstantesMensagensFeedback::SUCESSO){
+				//TODO: modificar tela
+			}
+		}else if($acao == "remover"){
+			$controlador->removerPontoTuristico();
+		}else if($acao == "atualizar"){
+			$controlador->atualizarPontoTuristico();
+		}else if($acao == "pegar_ponto_turistico_id"){
+			$controlador->pegarPontoTuristicoPorId();
+		}else if($acao == "pegar_pontos_visitados_por_turista"){
+			$controlador->pegarTodosOsPontosTuristicosVisitadosPorUmTurista();
+		}else if($acao == "pegar_todos_pontos_turisticos"){
+			$controlador->pegarTodosOsPontosTuristicos();
+		}else{
+			
 		}
-	}else if($acao == "remover"){
-		$controlador->removerPontoTuristico();
-	}else if($acao == "atualizar"){
-		$controlador->atualizarPontoTuristico();
-	}else if($acao == "pegar_ponto_turistico_id"){
-		$controlador->pegarPontoTuristicoPorId();
-	}else if($acao == "pegar_pontos_visitados_por_turista"){
-		$controlador->pegarTodosOsPontosTuristicosVisitadosPorUmTurista();
-	}else if($acao == "pegar_todos_pontos_turisticos"){
-		$controlador->pegarTodosOsPontosTuristicos();
-	}else{
-		
 	}
 ?>

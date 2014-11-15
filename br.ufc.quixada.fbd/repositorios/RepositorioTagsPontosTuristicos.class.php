@@ -1,8 +1,8 @@
 <?php
 	include_once 'FalhaAoExecutarQuery.class.php';
-	include_once 'br.ufc.quixada.fbd.sgbd/Conexao.class.php';
+	include_once __DIR__.'/../sgbd/Conexao.class.php';
 	include_once 'FalhaPrepareStatement.class.php';
-	include_once 'br.ufc.quixada.fbd.sgbd/FalhaAoCriarConexao.class.php';
+	include_once __DIR__.'/../sgbd/FalhaAoCriarConexao.class.php';
 	
 	class RepositorioTagsPontosTuristicos{
 		private $conexao;

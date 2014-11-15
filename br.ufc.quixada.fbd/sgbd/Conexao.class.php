@@ -1,5 +1,4 @@
 <?php
-	include_once 'br.ufc.quixada.fbd.sgbd/Conexao.class.php';
 	
 	Class Conexao{
 		function abrirConexao(){

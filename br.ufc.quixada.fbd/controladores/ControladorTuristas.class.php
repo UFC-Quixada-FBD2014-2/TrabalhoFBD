@@ -1,9 +1,9 @@
 <?php
-	include_once 'br.ufc.quixada.fbd.repositorios/RepositorioTuristas.class.php';
-	include_once 'br.ufc.quixada.fbd.sgbd/FalhaAoCriarConexao.class.php';
-	include_once 'br.ufc.quixada.fbd.repositorios/FalhaAoExecutarQuery.class.php';
-	include_once 'br.ufc.quixada.fbd.repositorios/FalhaPrepareStatement.class.php';
-	include_once 'br.ufc.quixada.fbd.repositorios/FalhaTuristaNaoCadastrado.class.php';
+	include_once __DIR__.'/../repositorios/RepositorioTuristas.class.php';
+	include_once __DIR__.'/../sgbd/FalhaAoCriarConexao.class.php';
+	include_once __DIR__.'/../repositorios/FalhaAoExecutarQuery.class.php';
+	include_once __DIR__.'/../repositorios/FalhaPrepareStatement.class.php';
+	include_once __DIR__.'/../repositorios/FalhaTuristaNaoCadastrado.class.php';
 	
 	Class ControladorTuristas{
 		
@@ -15,8 +15,10 @@
 		
 		function cadastrarTurista(){
 			if(isset($_POST['nome'], $_POST['senha'], $_POST['dataDeNascimento'], $_POST['preferencias'], $_POST['email'])){
+				
 				$nome = $_POST['nome'];
 				$senha = $_POST['senha'];
+				$senha = hash('sha512', $senha);
 				$dataDeNascimento = $_POST['dataDeNascimento'];
 				$preferencias = $_POST['preferencias'];
 				$email = $_POST['email'];
@@ -96,22 +98,24 @@
 		
 	}
 	
-	$acao = $_POST['acao'];
-	$controlador = new ControladorTuristas();
-	if($acao == "cadastrar"){
-		$retorno = $controlador->cadastrarTurista();
-		if($retorno == ConstantesMensagensFeedback::SUCESSO){
-			//TODO: modificar tela
+	if(isset($_POST['acao'])){
+		$acao = $_POST['acao'];
+		$controlador = new ControladorTuristas();
+		if($acao == "cadastrar"){
+			$retorno = $controlador->cadastrarTurista();
+			if($retorno == ConstantesMensagensFeedback::SUCESSO){
+				//TODO: modificar tela
+			}
+		}else if($acao == "remover"){
+			$controlador->removerTurista();
+		}else if($acao == "atualizar"){
+			$controlador->atualizarTurista();
+		}else if($acao == "pegar_turista_email"){
+			$controlador->pegarTuristaPorEmail();
+		}else if($acao == "pegar_todos_turistas"){
+			$controlador->pegarTodosOsTuristas();
+		}else{
+		
 		}
-	}else if($acao == "remover"){
-		$controlador->removerTurista();
-	}else if($acao == "atualizar"){
-		$controlador->atualizarTurista();
-	}else if($acao == "pegar_turista_email"){
-		$controlador->pegarTuristaPorEmail();
-	}else if($acao == "pegar_todos_turistas"){
-		$controlador->pegarTodosOsTuristas();
-	}else{
-	
 	}
 ?>

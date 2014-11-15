@@ -1,5 +1,5 @@
 <?php
-	include_once 'br.ufc.quixada.fbd.enumeration/ConstantesMensagensExcecoes.php';
+	include_once __DIR__.'/../enumeration/ConstantesMensagensExcecoes.php';
 	
 	Class FalhaPrepareStatement extends Exception{
 		function __construct(){

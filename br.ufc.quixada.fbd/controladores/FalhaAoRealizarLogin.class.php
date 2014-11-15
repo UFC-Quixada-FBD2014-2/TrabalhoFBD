@@ -3,7 +3,7 @@
 	
 	Class FalhaAoExecutarQuery extends Exception{
 		function __construct(){
-			parent::__construct(ConstantesMensagensExcecoes::FALHA_AO_EXECUTAR_QUERY);
+			parent::__construct(ConstantesMensagensExcecoes::FALHA_AO_REALIZAR_LOGIN);
+				
 		}
 	}
-?>
