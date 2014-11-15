@@ -9,9 +9,9 @@ $(document).ready(function () {
 	}
 	
 	function initialize() {
-		var latlng = new google.maps.LatLng(-4.9654896, -39.0241654,15);
+		var latlng = new google.maps.LatLng(-4.9683542,-39.016226,15);
 		var options = {
-				zoom: 18,
+				zoom: 15,
 				center: latlng,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 		};

@@ -1,8 +1,9 @@
 var geocoder;
 var map;
 var pontosTuristicos;
-
-
+var idInfoBoxAberto;
+var infoBox = [];
+var markers = [];
 
 $(document).ready(function () {
 
@@ -23,9 +24,17 @@ $(document).ready(function () {
 	}
 	
 	
-	
+	function abrirInfoBox(id, marker) {
+	    if (typeof(idInfoBoxAberto) == 'number' && typeof(infoBox[idInfoBoxAberto]) == 'object') {
+	        infoBox[idInfoBoxAberto].close();
+	    }
+	 
+	    infoBox[id].open(map, marker);
+	    idInfoBoxAberto = id;
+	}
 	
 	function adicionarPontosAoMapa(){
+		var latlngbounds = new google.maps.LatLngBounds();
 		for(i = 0 ; i < pontosTuristicos.length ; i++){
 			latLngPonto = new google.maps.LatLng(pontosTuristicos[i].latitude, pontosTuristicos[i].longitude);
 			nome = pontosTuristicos[i].nome;
@@ -35,12 +44,42 @@ $(document).ready(function () {
             	  map: map,
                   position: latLngPonto,
                   title: nome,
+                  icon:'img/marcador-azul.png',
                   url: '/',
                   animation: google.maps.Animation.DROP
             });
             
+            
+            
+            var infowindow = new google.maps.InfoWindow(), marker;
+            
+            var content = "<h5>"+nome+"</h5></br><p>Conteúdo</p>"
+            
+            /*google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function() {
+                    infowindow.setContent(content);
+                    infowindow.open(map, marker);
+                }
+            })(marker));*/
+            
+            var myOptions = {
+                content: content,
+                pixelOffset: new google.maps.Size(-150, 0)
+            };
+         
+            infoBox[id] = new InfoBox(myOptions);
+            infoBox[id].marker = marker;
+         
+            infoBox[id].listener = google.maps.event.addListener(marker, 'click', function (e) {
+                abrirInfoBox(id, marker);
+            });
+            
+            markers.push(marker);
+            latlngbounds.extend(marker.position);
 						
-      }
+		}
+		var markerCluster = new MarkerClusterer(map, markers);
+		map.fitBounds(latlngbounds);
 	}
 	
 	function carregarPontosTuristicos(){
@@ -51,6 +90,7 @@ $(document).ready(function () {
 				if(data != -5){
 					pontosTuristicos = data;
 					adicionarPontosAoMapa();
+					
 				}
 			},
 			error:function(){
@@ -70,6 +110,7 @@ $(document).ready(function () {
 		
 					var location = new google.maps.LatLng(latitude, longitude);
 					map.setCenter(location);
+					map.setZoom(15);
 				}
 			}
 		})

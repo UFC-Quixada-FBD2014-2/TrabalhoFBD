@@ -42,8 +42,10 @@
 	<script
 		src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBHju8OGAGzK6TSjG1DI8H8MNqiuFykD00&sensor=false"></script>
 	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
-	<script type="text/javascript" src="js/mapaTelaInicial.js"></script>
+	<script type="text/javascript" src="js/google-maps/markerclusterer.js"></script>
+	<script type="text/javascript" src="js/google-maps/infoBox.js"></script>
 	<script type="text/javascript" src="js/jquery-autocomplete.js"></script>
+	<script type="text/javascript" src="js/mapaTelaInicial.js"></script>
 
 </body>
 </html>
