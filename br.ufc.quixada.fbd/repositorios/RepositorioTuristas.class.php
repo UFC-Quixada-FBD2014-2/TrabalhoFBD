@@ -31,8 +31,15 @@ Class RepositorioTuristas{
 			$stmt->bindParam(3, $dataDeNascimento);
 			$stmt->bindParam(4, $senha);
 
+			//$this->conexao->beginTransaction();
 			if($stmt->execute()){
-				$this->repositorioPreferenciasTurista->cadastrarPreferenciasTurista($novoTurista);
+				
+				try{
+					$this->repositorioPreferenciasTurista->cadastrarPreferenciasTurista($novoTurista);
+					//$this->conexao->commit();
+				}catch (Exception $e){
+					//$this->conexao->rollBack();
+				}
 			}else{
 				throw new FalhaAoExecutarQuery();
 			}
@@ -49,7 +56,7 @@ Class RepositorioTuristas{
 			$stmt->bindParam(1, $email);
 
 			if($stmt->execute()){
-				$this->repositorioPreferenciasTurista->removerPreferenciasTurista($email);
+				
 			}else{
 				throw new FalhaAoExecutarQuery();
 			}
@@ -66,7 +73,8 @@ Class RepositorioTuristas{
 		$email = $turista->getEmail();
 
 		$sqlQuery = 'UPDATE Turista SET nome = ?, dataDeNascimento = ?, senha = ? WHERE email = ?';
-			
+		
+		$this->conexao->beginTransaction();
 		if($stmt = $this->conexao->prepare($sqlQuery)){
 			$stmt->bindParam(1, $nome);
 			$stmt->bindParam(2, $dataDeNascimento);
@@ -74,8 +82,13 @@ Class RepositorioTuristas{
 			$stmt->bindParam(4, $email);
 
 			if($stmt->execute()){
-				$this->repositorioPreferenciasTurista->removerPreferenciasTurista($email);
-				$this->repositorioPreferenciasTurista->cadastrarPreferenciasTurista($turista);
+				try{
+					$this->repositorioPreferenciasTurista->removerPreferenciasTurista($email);
+					$this->repositorioPreferenciasTurista->cadastrarPreferenciasTurista($turista);
+					$this->conexao->commit();
+				}catch (Exception $e){
+					$this->conexao->rollBack();
+				}
 			}else{
 				throw new FalhaAoExecutarQuery();
 			}

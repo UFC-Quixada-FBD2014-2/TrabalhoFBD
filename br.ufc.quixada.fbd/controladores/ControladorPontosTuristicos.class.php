@@ -5,7 +5,8 @@
 	include_once __DIR__.'/../repositorios/FalhaPrepareStatement.class.php';
 	include_once __DIR__.'/../enumeration/ConstantesMensagensFeedback.class.php';
 	include_once __DIR__.'/../repositorios/FalhaPontoTuristicoNaoCadastrado.class.php';
-
+	include_once __DIR__.'/../entidades/PontoTuristico.class.php';
+	
 	Class ControladorPontosTuristicos{
 		
 		private $repositorioPontosTuristicos;
@@ -26,7 +27,7 @@
 				$cidade = $_POST['cidade'];
 				$estado = $_POST['estado'];
 				$pais = $_POST['pais'];
-				$tags = $_POST['tags'];
+				$tags = split( "," , $_POST['tags']);
 				$bairro = $_POST['bairro'];
 				$numero = $_POST['numero'];
 				$precoEntrada = $_POST['precoEntrada'];
@@ -34,7 +35,7 @@
 				$horarioFechamento = $_POST['horarioFechamento'];
 				
 				
-				$novoPontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $bairro, $preco_entrada, $horario_abertura, $horario_fechamento, $tags);
+				$novoPontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $bairro, $precoEntrada, $horarioAbertura, $horarioFechamento, $tags);
 				try {
 					$this->repositorioPontosTuristicos->cadastrar($novoPontoTuristico);
 					return ConstantesMensagensFeedback::SUCESSO;
@@ -72,7 +73,7 @@
 				$cidade = $_POST['cidade'];
 				$estado = $_POST['estado'];
 				$pais = $_POST['pais'];
-				$tags = $_POST['tags'];
+				$tags = split( "," , $_POST['tags']);
 				$bairro = $_POST['bairro'];
 				$numero = $_POST['numero'];
 				$precoEntrada = $_POST['precoEntrada'];
@@ -140,6 +141,8 @@
 			if($retorno == ConstantesMensagensFeedback::SUCESSO){
 				//TODO: modificar tela
 			}
+			
+			echo $retorno;
 		}else if($acao == "remover"){
 			$controlador->removerPontoTuristico();
 		}else if($acao == "atualizar"){

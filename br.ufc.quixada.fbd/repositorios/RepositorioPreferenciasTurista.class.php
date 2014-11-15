@@ -64,8 +64,9 @@
 			for($i=0; $i<count($preferencias); $i++){
 				
 				if($stmt = $this->conexao->prepare($sqlQuery)){
+					$preferencia = $preferencias[$i];
 					$stmt->bindParam(1, $email);
-					$stmt->bindParam(2, $preferencias[$i]);
+					$stmt->bindParam(2, $preferencia);
 					
 					if($stmt->execute()){
 						

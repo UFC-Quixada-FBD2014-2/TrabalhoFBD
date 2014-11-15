@@ -22,7 +22,7 @@
 			
 			
 			$nome = $novoPontoTuristico->getNome();
-			$latitude = $$novoPontoTuristico->getLatitude();
+			$latitude = $novoPontoTuristico->getLatitude();
 			$longitude = $novoPontoTuristico->getLongitude();
 			$horarioAbertura = $novoPontoTuristico->getHorarioAbertura();
 			$horarioFechamento = $novoPontoTuristico->getHorarioFechamento();
@@ -32,6 +32,8 @@
 							PontoTuristico (nome, latitude, longitude, precoDaEntrada, horarioAbertura, horarioFechamento) 
 							VALUES (?, ?, ?, ?, ?, ?) RETURNING idPontoTuristico";
 			
+			
+			
 			if($stmt = $this->conexao->prepare($sqlQuery)){
 				$stmt->bindParam(1, $nome);
 				$stmt->bindParam(2, $latitude);
@@ -40,10 +42,21 @@
 				$stmt->bindParam(5, $horarioAbertura);
 				$stmt->bindParam(6, $horarioFechamento);
 				
+				//$this->conexao->beginTransaction();
+				
 				if($idPontoTuristico = $stmt->execute()){
-					$this->repositorioEnderecoPontosTuristicos->cadastrarEnderecoPontoTuristico($novoPontoTuristico);
-					$this->repositorioTagsPontosTuristicos->cadastrarTagsPontoTuristico($novoPontoTuristico);
-					$novoPontoTuristico->setId($idPontoTuristico);
+					$idPontoTuristico = $stmt->fetch();
+					$novoPontoTuristico->setId($idPontoTuristico[0]);
+					echo $idPontoTuristico[0];
+					
+					try{
+						$this->repositorioEnderecoPontosTuristicos->cadastrarEnderecoPontoTuristico($novoPontoTuristico);
+						$this->repositorioTagsPontosTuristicos->cadastrarTagsPontoTuristico($novoPontoTuristico);
+						//$this->conexao->commit();
+					}catch(Exception $e){
+						//$this->conexao->rollBack();
+					}
+						
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}
@@ -55,14 +68,13 @@
 		public function remover($idPontoTuristico){
 			
 			
-			$sqlQuery = 'DELETE FROM PontoTuristico WHERE idPontoTuristico = $1';
+			$sqlQuery = 'DELETE FROM PontoTuristico WHERE idPontoTuristico = ?';
 				
 			if($stmt = $this->conexao->prepare($sqlQuery)){
 				$stmt->bindParam(1, $idPontoTuristico);
 				
 				if($stmt->execute()){
-					$this->repositorioTagsPontosTuristicos->removerTagsPontoTuristico($idPontoTuristico);
-					$this->repositorioEnderecoPontosTuristicos->removerEnderecoPontoTuristico($idPontoTuristico);
+					
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}
@@ -94,11 +106,16 @@
 				$stmt->bindParam(6, $horarioFechamento);
 				$stmt->bindParam(7, $idPontoTuristico);
 				
+				$this->conexao->beginTransaction();
 				if($stmt->execute()){
-					$this->repositorioTagsPontosTuristicos->removerTagsPontoTuristico($idPontoTuristico);
-					$this->repositorioTagsPontosTuristicos->cadastrarTagsPontoTuristico($turista);
-					$this->repositorioEnderecoPontosTuristicos->atualizarEnderecoPontoTuristico($pontoTuristico);
-					
+					try{
+						$this->repositorioTagsPontosTuristicos->removerTagsPontoTuristico($idPontoTuristico);
+						$this->repositorioTagsPontosTuristicos->cadastrarTagsPontoTuristico($turista);
+						$this->repositorioEnderecoPontosTuristicos->atualizarEnderecoPontoTuristico($pontoTuristico);
+						$this->conexao->commit();
+					}catch (Exception $e){
+						$this->conexao->rollBack();
+					}
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}

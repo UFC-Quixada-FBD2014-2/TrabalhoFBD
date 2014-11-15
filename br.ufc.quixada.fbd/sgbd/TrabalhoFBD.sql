@@ -25,22 +25,22 @@ CREATE TABLE EnderecoPontoTuristico (
   cidade VARCHAR(255) NULL,
   estado VARCHAR(255) NULL,
   pais VARCHAR(255) NULL,
-  numero VARCHAR(255) NULL,
+  numero INTEGER NULL,
   bairro VARCHAR(255) NULL,
-  CONSTRAINT EnderecoPontoTuristico_FKey FOREIGN KEY(idPontoTuristico) REFERENCES PontoTuristico(idPontoTuristico)
+  CONSTRAINT EnderecoPontoTuristico_FKey FOREIGN KEY(idPontoTuristico) REFERENCES PontoTuristico(idPontoTuristico) ON DELETE cascade;
 );
 
 
 CREATE TABLE PreferenciaDeTurista (
   emailTurista VARCHAR(255) NOT NULL,
   nome VARCHAR(255) NULL,
-  CONSTRAINT PreferenciaDeTurista_FKey FOREIGN KEY(emailTurista) REFERENCES Turista(email)
+  CONSTRAINT PreferenciaDeTurista_FKey FOREIGN KEY(emailTurista) REFERENCES Turista(email) ON DELETE cascade
 );
 
 CREATE TABLE TagDePontoTuristico (
   idPontoTuristico INTEGER NOT NULL,
   nome VARCHAR(255) NULL,
-  CONSTRAINT TagDePontoTuristico_FKey FOREIGN KEY(idPontoTuristico) REFERENCES PontoTuristico(idPontoTuristico)
+  CONSTRAINT TagDePontoTuristico_FKey FOREIGN KEY(idPontoTuristico) REFERENCES PontoTuristico(idPontoTuristico) ON DELETE cascade
 );
 
 

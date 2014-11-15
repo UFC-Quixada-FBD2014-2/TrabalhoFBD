@@ -21,7 +21,7 @@
 			$this->cidade = $cidade;
 			$this->estado = $estado;
 			$this->id = $id;
-			$this->tags = tags;
+			$this->tags = $tags;
 			$this->latitude = $latitude;
 			$this->longitude = $longitude;
 			$this->numero = $numero;

@@ -15,7 +15,7 @@
 		public function pegarTagsPontoTuristico($idPontoTuristico){
 			
 			$sqlQuery = 'SELECT * 
-						 FROM TagsDePontoTuristico
+						 FROM TagDePontoTuristico
 					 	 WHERE idPontoTuristico = ?';
 		
 			if($stmt = $this->conexao->prepare($sqlQuery)){
@@ -41,7 +41,7 @@
 		
 		public function removerTagsPontoTuristico($idPontoTuristico){
 			
-			$sqlQuery = 'DELETE FROM TagsDePontoTuristico 
+			$sqlQuery = 'DELETE FROM TagDePontoTuristico 
 						 WHERE idPontoTuristico = ?';
 		
 			if($stmt = $this->conexao->prepare($sqlQuery)){
@@ -61,13 +61,15 @@
 			$tags = $pontoTuristico->getTags();
 			$idPontoTuristico = $pontoTuristico->getId();
 				
-			$sqlQuery = 'INSERT INTO TagsDePontoTuristico 
+			$sqlQuery = 'INSERT INTO TagDePontoTuristico 
 						(idPontoTuristico, nome) VALUES (?, ?)';
-		
+			
+				
 			for($i=0; $i<count($tags); $i++){
 				if($stmt = $this->conexao->prepare($sqlQuery)){
 					$stmt->bindParam(1, $idPontoTuristico);
-					$stmt->bindParam(2, $tags[$i]);
+					$tag = $tags[$i];
+					$stmt->bindParam(2, $tag);
 					
 					if($stmt->execute()){
 						
