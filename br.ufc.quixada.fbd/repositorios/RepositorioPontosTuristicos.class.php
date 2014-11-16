@@ -188,13 +188,14 @@
 						$estado = $resultado['estado'];
 						$pais = $resultado['pais'];
 						$rua = $resultado['rua'];
+						$bairro = $resultado['bairro'];
 						$numero = $resultado['numero'];
 						$precoEntrada = $resultado['precodaentrada'];
 						$horarioAbertura = $resultado['horarioabertura'];
 						$horarioFechamento = $resultado['horariofechamento'];
 						$tags = $this->repositorioTagsPontosTuristicos->pegarTagsPontoTuristico($idPontoTuristico);
 						
-						$pontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $precoEntrada, $horarioAbertura, $horarioFechamento, $tags, $idPontoTuristico);
+						$pontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $bairro, $precoEntrada, $horarioAbertura, $horarioFechamento, $tags, $idPontoTuristico);
 						
 						array_push($pontosTuristicos, $pontoTuristico);
 					}
@@ -214,7 +215,7 @@
 			$sqlQuery = 'SELECT * 
 							FROM PontoTuristico PT, EnderecoPontoTuristico EPT, Visitas V 
 							WHERE EPT.idPontoTuristico = PT.idPontoTuristico 
-							AND V.idPontoTuristico = PT.idPontoTuristo
+							AND V.idPontoTuristico = PT.idPontoTuristico
 							AND V.emailTurista = ?';
 			
 			if($stmt = $this->conexao->prepare($sqlQuery)){
@@ -225,27 +226,76 @@
 					$resultados = $stmt->fetchAll();
 					foreach($resultados as $resultado){
 			
-						$idPontoTuristico = $resultado['PT.idPontoTuristico'];
+						$idPontoTuristico = $resultado['idpontoturistico'];
 						$nome = $resultado['nome'];
-						$latitude = $resultado['latutude'];
+						$latitude = $resultado['latitude'];
 						$longitude = $resultado['longitude'];
 						$cidade = $resultado['cidade'];
 						$estado = $resultado['estado'];
 						$pais = $resultado['pais'];
 						$rua = $resultado['rua'];
+						$bairro = $resultado['bairro'];
 						$numero = $resultado['numero'];
-						$preco_entrada = $resultado['precoEntrada'];
-						$horario_abertura = $resultado['horarioAbertura'];
-						$horario_fechamento = $resultado['horarioFechamento'];
+						$precoEntrada = $resultado['precodaentrada'];
+						$horarioAbertura = $resultado['horarioabertura'];
+						$horarioFechamento = $resultado['horariofechamento'];
 						$tags = $this->repositorioTagsPontosTuristicos->pegarTagsPontoTuristico($idPontoTuristico);
 			
-						$pontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $preco_entrada, $horario_abertura, $horario_fechamento, $tags, $idPontoTuristico);
+						$pontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $bairro, $precoEntrada, $horarioAbertura, $horarioFechamento, $tags, $idPontoTuristico);
 			
 						array_push($pontosTuristicos, $pontoTuristico);
 					}
 			
 					return $pontosTuristicos;
 			
+				}else{
+					throw new FalhaAoExecutarQuery();
+				}
+			}else{
+				throw new FalhaPrepareStatement();
+			}
+		}
+		
+		public function pegarTodosOsPontosPorPreferencias($email){
+				
+			$sqlQuery = 'SELECT *
+							FROM PontoTuristico PT, EnderecoPontoTuristico EPT
+							WHERE EPT.idPontoTuristico = PT.idPontoTuristico
+							AND EXISTS (SELECT * FROM TagDePontoTuristico TPT, PreferenciaDeTurista PDT 
+										WHERE PDT.emailTurista = ?
+										AND TPT.idPontoTuristico = PT.idPontoTuristico
+										AND TPT.nome LIKE PDT.nome)';
+				
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $email);
+				if($stmt->execute()){
+					$pontosTuristicos = Array();
+						
+					$resultados = $stmt->fetchAll();
+					foreach($resultados as $resultado){
+							
+						$idPontoTuristico = $resultado['idpontoturistico'];
+						$nome = $resultado['nome'];
+						$latitude = $resultado['latitude'];
+						$longitude = $resultado['longitude'];
+						$cidade = $resultado['cidade'];
+						$estado = $resultado['estado'];
+						$pais = $resultado['pais'];
+						$rua = $resultado['rua'];
+						$bairro = $resultado['bairro'];
+						$numero = $resultado['numero'];
+						$precoEntrada = $resultado['precodaentrada'];
+						$horarioAbertura = $resultado['horarioabertura'];
+						$horarioFechamento = $resultado['horariofechamento'];
+						$tags = $this->repositorioTagsPontosTuristicos->pegarTagsPontoTuristico($idPontoTuristico);
+							
+						$pontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $bairro, $precoEntrada, $horarioAbertura, $horarioFechamento, $tags, $idPontoTuristico);
+												
+						array_push($pontosTuristicos, $pontoTuristico);
+					}
+						
+					return $pontosTuristicos;
+						
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}

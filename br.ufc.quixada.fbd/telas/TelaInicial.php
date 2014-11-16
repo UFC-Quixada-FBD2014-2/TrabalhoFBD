@@ -123,6 +123,8 @@
 		<script type="text/javascript" src="js/google-maps/infoBox.js"></script>
 		<script type="text/javascript" src="js/jquery-autocomplete.js"></script>
 		<script type="text/javascript" src="js/mapaTelaInicialTodos.js"></script>
+		<script type="text/javascript" src="js/mapaTelaInicialPreferencias.js"></script>
+		<script type="text/javascript" src="js/mapaTelaInicialVisitados.js"></script>
 		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
 	
 	</body>

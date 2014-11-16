@@ -6,7 +6,7 @@
 	$controladorLogin->iniciarSessao();
 
 	if($controladorLogin->checarLogin()){
-		header("Location:PaginaInicial.php");
+		header("Location:TelaInicial.php");
 	}
 ?>
 
