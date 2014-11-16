@@ -1,5 +1,17 @@
+<?php
+	include_once __DIR__.'/../controladores/ControladorLogin.class.php';
+	
+	$controladorLogin = new ControladorLogin();
+	
+	$controladorLogin->iniciarSessao();
+
+	if($controladorLogin->checarLogin()){
+		header("Location:PaginaInicial.php");
+	}
+?>
+
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br" xml:lang="pt-br">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<head>
 		<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">

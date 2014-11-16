@@ -17,7 +17,7 @@ $(document).ready(function () {
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 		
-		map = new google.maps.Map(document.getElementById("mapa"), options);
+		map = new google.maps.Map(document.getElementById("mapaTodos"), options);
 		
 		geocoder = new google.maps.Geocoder();
 		carregarPontosTuristicos();
@@ -106,7 +106,7 @@ $(document).ready(function () {
 					var latitude = results[0].geometry.location.lat();
 					var longitude = results[0].geometry.location.lng();
 		
-					$('#txtEndereco').val(results[0].formatted_address);
+					$('#txtEnderecoTodos').val(results[0].formatted_address);
 		
 					var location = new google.maps.LatLng(latitude, longitude);
 					map.setCenter(location);
@@ -116,17 +116,17 @@ $(document).ready(function () {
 		})
 	}
 	
-	$("#btnEndereco").click(function() {
+	$("#btnEnderecoTodos").click(function() {
 		if($(this).val() != "")
-			carregarNoMapa($("#txtEndereco").val());
+			carregarNoMapa($("#txtEnderecoTodos").val());
 	})
 	
-	$("#txtEndereco").blur(function() {
+	$("#txtEnderecoTodos").blur(function() {
 		if($(this).val() != "")
 			carregarNoMapa($(this).val());
 	});
 	
-	$("#txtEndereco").autocomplete({
+	$("#txtEnderecoTodos").autocomplete({
 		source: function (request, response) {
 			geocoder.geocode({ 'address': request.term + ', Brasil', 'region': 'BR' }, function (results, status) {
 				response($.map(results, function (item) {
@@ -141,7 +141,6 @@ $(document).ready(function () {
 		},
 		select: function (event, ui) {
 			var location = new google.maps.LatLng(ui.item.latitude, ui.item.longitude);
-			marker.setPosition(location);
 			map.setCenter(location);
 			map.setZoom(16);
 		}

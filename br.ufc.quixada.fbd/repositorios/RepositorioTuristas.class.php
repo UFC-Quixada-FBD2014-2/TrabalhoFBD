@@ -5,6 +5,7 @@ include_once __DIR__.'/../sgbd/FalhaAoCriarConexao.class.php';
 //include_once 'FalhaAoExecutarQuery.class.php';
 include_once 'FalhaTuristaNaoCadastrado.class.php';
 include_once 'RepositorioPreferenciasTurista.class.php';
+include_once __DIR__.'/../entidades/Turista.class.php';
 
 Class RepositorioTuristas{
 	private $conexao;

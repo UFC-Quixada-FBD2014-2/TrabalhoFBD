@@ -15,53 +15,60 @@
 			$secure = false;
 			$httponly = true;
 						
-			ini_sec('session.use_only_cookies', 1);
-			$cookieParametros = session_get_cookie_params();
+			ini_set('session.use_only_cookies', 1);
+			$cookieParams = session_get_cookie_params();
 			session_set_cookie_params($cookieParams["lifetime"], $cookieParams["path"], $cookieParams["domain"], $secure, $httponly);
-			session_name($session_name);
+			session_name($nomeDaSessao);
+			session_start();
 			session_regenerate_id(true);
 		}
 		
 		function realizarLogin(){
 			
-			$email = $_POST['email'];
-			$senha = $_POST['senha'];
-			$senha = hash('sha512', $senha);
-			
-			try{
-				$turista = $this->repositorioTuristas->pegarTuristaPorEmail($email);
-			} catch (FalhaAoBuscarTurista $e){
-				throw new FalhaAoRealizarLogin();
-			}
+			if(isset($_POST['email'], $_POST['senha'])){
+				$email = $_POST['email'];
+				$senha = $_POST['senha'];
+				$senha = hash('sha512', $senha);
 				
-			if($turista != null){
-				if($senha == $turista->getSenha()){
-					$ip = $_SERVER['REMOTE_ADDR'];
-					$user_browser = $_SERVER['HTTP_USER_AGENT'];
-					$_SESSION['user_id'] = $id_user;
-					$email = preg_replace("/[^a-zA-Z@.0-9_\-]+/", "", $email);
-					$_SESSION['email'] = $email;
-					$_SESSION['login_string'] = hash('sha512', $senha.$ip.$user_browser);
+				try{
+					$turista = $this->repositorioTuristas->pegarTuristaPorEmail($email);
+				} catch (Exception $e){
+					return ConstantesMensagensFeedback::FALHA_NO_BANCO;
+				}
+					
+				if($turista != null){
+					if($senha == $turista->getSenha()){
+
+						$this->iniciarSessao();
+						
+						$ip = $_SERVER['REMOTE_ADDR'];
+						$user_browser = $_SERVER['HTTP_USER_AGENT'];
+						$email = preg_replace("/[^a-zA-Z@.0-9_\-]+/", "", $email);
+						$_SESSION['email'] = $email;
+						$_SESSION['login_string'] = hash('sha512', $senha.$ip.$user_browser);
+						
+						return ConstantesMensagensFeedback::SUCESSO;
+					}else{
+						return ConstantesMensagensFeedback::FALHA_LOGIN;
+					}
 				}else{
-					throw new FalhaAoRealizarLogin();
+					return ConstantesMensagensFeedback::FALHA_LOGIN;
 				}
 			}else{
-				throw new FalhaAoRealizarLogin();
+				return ConstantesMensagensFeedback::FALHA_NOS_PARAMETROS;
 			}
 		}
 		
 		function checarLogin(){
-			
-			if(isset($_SESSION['username'])){
+			if(isset($_SESSION['email'])){
 				 
-				$email = $_SESSION['username']; 
+				$email = $_SESSION['email']; 
 				$turista = $this->repositorioTuristas->pegarTuristaPorEmail($email);
 			
 				if($turista != null){ 
-					if(isset($_SESSION['user_id'], $_SESSION['email'], $_SESSION['login_string'])){
+					if(isset($_SESSION['email'], $_SESSION['login_string'])){
 					
 						if($turista != null){
-							$id_user = $_SESSION['user_id'];
 							$login_string = $_SESSION['login_string'];
 							$email = $_SESSION['email'];
 							$ip_address = $_SERVER['REMOTE_ADDR'];
@@ -72,6 +79,8 @@
 								
 							if($login_check == $login_string){
 								return true;
+							}else{
+								return false;
 							}
 						}else{
 							return false;
@@ -84,10 +93,24 @@
 				else{   
 					return false;
 				}
-			}
-			
-			else
+			}else{
 				return false;
+			}
+		}
+	}
+	
+	if(isset($_POST['acao'])){
+		$acao = $_POST['acao'];
+		$controladorLogin = new ControladorLogin();
+		
+		if($acao == 'login'){
+			$resultado = $controladorLogin->realizarLogin();
+			
+			if($resultado == ConstantesMensagensFeedback::SUCESSO){
+				header("Location:../telas/TelaInicial.php");
+			}
 		}
 	}
 ?>
+
+	

@@ -12,22 +12,11 @@ legend { display: none }
 	width: 100%;
 	overflow: hidden;
 }
-	
 
-h1 { 
-	font: 25px 'Open Sans', Arial; 
-	text-align: center; 
-	color: #555; 
-	text-shadow: 2px 2px 0 #ccc; 
-	margin-bottom: 20px; 
-	letter-spacing: -0.5px
-}
 
 .campos {
-	width: 740px; 
-	margin: 0 auto 15px;
-	margin-top: 10px; 
-	overflow: hidden; 
+	width: auto; 
+	margin: 15px; 
 }
 
 .campos label { 
@@ -36,11 +25,11 @@ h1 {
 	color: #f0f0f0; 
 	cursor: pointer; 
 	display: block; 
-	height: 20px; 
+	height: 34px; 
 	float: left; 
 	font: 15px 'Open Sans',Arial;
 	padding: 7px 13px;
-	width: 70px;
+	width: 100px;
 }
 
 .campos input[type="text"] { 
@@ -49,9 +38,10 @@ h1 {
 	display: block;
 	float: left;
 	font: 15px 'Open Sans',Arial; 
-	height: 16px;
 	padding: 9px;
 	width: 475px; 
+	height:34px;
+	border-radius: 0;
 }
 
 .campos input[type="button"] { 
