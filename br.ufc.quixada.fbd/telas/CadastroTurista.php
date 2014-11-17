@@ -3,6 +3,11 @@
 	
 	$controladorLogin = new ControladorLogin();
 	
+	$success = null;
+	if(isset($_GET['success'])){
+		$success = $_GET['success'];
+	}
+	
 	$controladorLogin->iniciarSessao();
 
 	if($controladorLogin->checarLogin()){
@@ -21,6 +26,19 @@
 	</head>
 	<div class="container">
 	<?php
+		if($success != null && $success == "false"){
+		echo '
+				<div class="alert alert-danger" role="alert" style="margin-top:30px;">
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<span class="sr-only">Error:</span>
+					Falha no cadastro.
+					<button type="button" class="close" data-dismiss="alert">
+					  <span aria-hidden="true">&times;</span>
+					  <span class="sr-only">Close</span>
+					</button>
+				</div>';
+		}
+	
 		require 'FormularioCadastroTurista.html';
 	?>
 	</div>

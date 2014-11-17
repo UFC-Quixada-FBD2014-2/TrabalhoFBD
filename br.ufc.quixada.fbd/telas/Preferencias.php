@@ -79,8 +79,8 @@
 							<div class="col-xs-2" style="margin-top:100px;">
 								<h3>Exbir no mapa</h3>							    
 								<ul class="nav nav-tabs tabs-left">
-							      	<li class="active"><a>Todos os Pontos</a></li>
-							      	<li><a href="Preferencias.php">Por Preferencias</a></li>
+							      	<li><a href="TelaInicial.php">Todos os Pontos</a></li>
+							      	<li class="active"><a>Por Preferencias</a></li>
 							      	<li><a href="Visitados.php">Pontos Visitados</a></li>
 							    </ul>
 							</div>
@@ -112,8 +112,8 @@
 		<script type="text/javascript" src="js/google-maps/markerclusterer.js"></script>
 		<script type="text/javascript" src="js/google-maps/infoBox.js"></script>
 		<script type="text/javascript" src="js/jquery-autocomplete.js"></script>
-		<script type="text/javascript" src="js/mustache.js"></script>
-		<script type="text/javascript" src="js/mapaTelaInicialTodos.js"></script>
+		
+		<script type="text/javascript" src="js/mapaTelaInicialPreferencias.js"></script>
 		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
 	
 	</body>

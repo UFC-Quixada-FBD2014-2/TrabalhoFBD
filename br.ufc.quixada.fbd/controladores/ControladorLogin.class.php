@@ -19,8 +19,8 @@
 			$cookieParams = session_get_cookie_params();
 			session_set_cookie_params($cookieParams["lifetime"], $cookieParams["path"], $cookieParams["domain"], $secure, $httponly);
 			session_name($nomeDaSessao);
-			session_start();
 			session_regenerate_id(true);
+			session_start();
 		}
 		
 		function realizarLogin(){
@@ -108,6 +108,8 @@
 			
 			if($resultado == ConstantesMensagensFeedback::SUCESSO){
 				header("Location:../telas/TelaInicial.php");
+			}else{
+				header("Location: ../telas/Login.php?success=false");
 			}
 		}
 	}

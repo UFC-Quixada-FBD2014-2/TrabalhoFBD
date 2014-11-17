@@ -31,15 +31,12 @@ Class RepositorioTuristas{
 			$stmt->bindParam(2, $nome);
 			$stmt->bindParam(3, $dataDeNascimento);
 			$stmt->bindParam(4, $senha);
-
-			//$this->conexao->beginTransaction();
+			
 			if($stmt->execute()){
 				
 				try{
 					$this->repositorioPreferenciasTurista->cadastrarPreferenciasTurista($novoTurista);
-					//$this->conexao->commit();
 				}catch (Exception $e){
-					//$this->conexao->rollBack();
 				}
 			}else{
 				throw new FalhaAoExecutarQuery();

@@ -1,7 +1,7 @@
 var geocoder;
 var map;
 var pontosTuristicos;
-var idInfoBoxAberto;
+var idinfoBoxAberto;
 var infoBox = [];
 var markers = [];
 
@@ -17,23 +17,23 @@ $(document).ready(function () {
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 		
-		map = new google.maps.Map(document.getElementById("mapaPreferencias"), options);
+		map = new google.maps.Map(document.getElementById("mapa"), options);
 		
 		geocoder = new google.maps.Geocoder();
-		carregarPontosTuristicos();
+		carregarpontosTuristicos();
 	}
 	
 	
-	function abrirInfoBox(id, marker) {
-	    if (typeof(idInfoBoxAberto) == 'number' && typeof(infoBox[idInfoBoxAberto]) == 'object') {
-	        infoBox[idInfoBoxAberto].close();
+	function abririnfoBox(id, marker) {
+	    if (typeof(idinfoBoxAberto) == 'number' && typeof(infoBox[idinfoBoxAberto]) == 'object') {
+	        infoBox[idinfoBoxAberto].close();
 	    }
 	 
 	    infoBox[id].open(map, marker);
-	    idInfoBoxAberto = id;
+	    idinfoBoxAberto = id;
 	}
 	
-	function adicionarPontosAoMapa(){
+	function adicionarPontosAomapa(){
 		var latlngbounds = new google.maps.LatLngBounds();
 		for(i = 0 ; i < pontosTuristicos.length ; i++){
 			latLngPonto = new google.maps.LatLng(pontosTuristicos[i].latitude, pontosTuristicos[i].longitude);
@@ -45,22 +45,23 @@ $(document).ready(function () {
                   position: latLngPonto,
                   title: nome,
                   icon:'img/marcador-azul.png',
-                  url: '/',
                   animation: google.maps.Animation.DROP
             });
             
             
             
-            var infowindow = new google.maps.InfoWindow(), marker;
             
-            var content = "<h5>"+nome+"</h5></br><p>Conteúdo</p>"
+            var content = [
+                           '<h5>{{nome}}</h5>',
+            			   '<p>',
+	            				'<a class="btn btn-link" href="PontoTuristico.php?id={{id}}">',
+	            					'Mais >>',
+	            				'</a>',
+            			   '</p>'
+	        ].join('');
             
-            /*google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                return function() {
-                    infowindow.setContent(content);
-                    infowindow.open(map, marker);
-                }
-            })(marker));*/
+            var content = Mustache.to_html(content, pontosTuristicos[i]);
+            	
             
             var myOptions = {
                 content: content,
@@ -71,7 +72,7 @@ $(document).ready(function () {
             infoBox[id].marker = marker;
          
             infoBox[id].listener = google.maps.event.addListener(marker, 'click', function (e) {
-                abrirInfoBox(id, marker);
+                abririnfoBox(id, marker);
             });
             
             markers.push(marker);
@@ -82,14 +83,14 @@ $(document).ready(function () {
 		map.fitBounds(latlngbounds);
 	}
 	
-	function carregarPontosTuristicos(){
+	function carregarpontosTuristicos(){
 		$.ajax({
 			url:"../fronteiras/ajax/buscarTodosOsPontosTuristicosPreferencias.php",
 			dataType:"json",
 			success:function(data){
 				if(data != -5){
 					pontosTuristicos = data;
-					adicionarPontosAoMapa();
+					adicionarPontosAomapa();
 					
 				}
 			},
@@ -99,14 +100,14 @@ $(document).ready(function () {
 		});
 	}
 	
-	function carregarNoMapa(endereco) {
+	function carregarNomapa(endereco) {
 		geocoder.geocode({ 'address': endereco + ', Brasil', 'region': 'BR' }, function (results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
 				if (results[0]) {
 					var latitude = results[0].geometry.location.lat();
 					var longitude = results[0].geometry.location.lng();
 		
-					$('#txtEnderecoPreferencias').val(results[0].formatted_address);
+					$('#txtEndereco').val(results[0].formatted_address);
 		
 					var location = new google.maps.LatLng(latitude, longitude);
 					map.setCenter(location);
@@ -116,17 +117,17 @@ $(document).ready(function () {
 		})
 	}
 	
-	$("#btnEnderecoPreferencias").click(function() {
+	$("#btnEndereco").click(function() {
 		if($(this).val() != "")
-			carregarNoMapa($("#txtEnderecoPreferencias").val());
+			carregarNomapa($("#txtEndereco").val());
 	})
 	
-	$("#txtEnderecoPreferencias").blur(function() {
+	$("#txtEndereco").blur(function() {
 		if($(this).val() != "")
-			carregarNoMapa($(this).val());
+			carregarNomapa($(this).val());
 	});
 	
-	$("#txtEnderecoPreferencias").autocomplete({
+	$("#txtEndereco").autocomplete({
 		source: function (request, response) {
 			geocoder.geocode({ 'address': request.term + ', Brasil', 'region': 'BR' }, function (results, status) {
 				response($.map(results, function (item) {

@@ -6,6 +6,7 @@
 	include_once __DIR__.'/../repositorios/FalhaTuristaNaoCadastrado.class.php';
 	include_once __DIR__.'/../enumeration/ConstantesMensagensFeedback.class.php';
 	include_once __DIR__.'/../entidades/Turista.class.php';
+	include_once __DIR__.'/../controladores/ControladorLogin.class.php';
 	
 	Class ControladorTuristas{
 		
@@ -60,13 +61,14 @@
 			if(isset($_POST['nome'], $_POST['senha'], $_POST['dataDeNascimento'], $_POST['preferencias'], $_POST['email'])){
 				$nome = $_POST['nome'];
 				$senha = $_POST['senha'];
+				$senha = hash('sha512', $senha);
 				$dataDeNascimento = $_POST['dataDeNascimento'];
 				$preferencias = $_POST['preferencias'];
 				$email = $_POST['email'];
 			
-				$novoTurista = new Turista($nome, $email, $senha, $data_de_nascimento, $preferencias);
+				$turista = new Turista($nome, $email, $senha, $dataDeNascimento, $preferencias);
 				try {
-					$this->repositorioTuristas->removerPorId($id_turista);
+					$this->repositorioTuristas->atualizarTurista($turista);
 					return ConstantesMensagensFeedback::SUCESSO;
 				} catch (Exception $e){
 					return ConstantesMensagensFeedback::FALHA_NO_BANCO;
@@ -107,13 +109,13 @@
 		if($acao == "cadastrar"){
 			$retorno = $controlador->cadastrarTurista();
 			if($retorno == ConstantesMensagensFeedback::SUCESSO){
-				echo "sucesso";
-				//TODO: modificar tela
+				header("Location: ../telas/Login.php?success=true");
 			}else{
-				echo $retorno;
+				header("Location: ../telas/CadastroTurista.php?success=false");
 			}
 		}else if($acao == "remover"){
-			$controlador->removerTurista();
+			$retorno = $controlador->removerTurista();
+			echo $retorno;
 		}else if($acao == "atualizar"){
 			$controlador->atualizarTurista();
 		}else if($acao == "pegar_turista_email"){

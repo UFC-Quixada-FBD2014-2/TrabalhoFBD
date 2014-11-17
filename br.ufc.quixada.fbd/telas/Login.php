@@ -4,7 +4,12 @@
 	$controladorLogin = new ControladorLogin();
 	
 	$controladorLogin->iniciarSessao();
-
+	
+	$success = null;
+	if(isset($_GET['success'])){
+		$success = $_GET['success'];
+	}
+	
 	if($controladorLogin->checarLogin()){
 		header("Location:TelaInicial.php");
 	}
@@ -25,11 +30,39 @@
 	    <![endif]-->
 	</head>
 	<body>
+		<div class="container">
 		<?php
+		
+			if($success != null && $success == "false"){
+				echo '
+				<div class="alert alert-danger" role="alert" style="margin-top:30px;">
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<span class="sr-only">Error:</span>
+					Email ou senha não correspondem.
+					<button type="button" class="close" data-dismiss="alert">
+					  <span aria-hidden="true">&times;</span>
+					  <span class="sr-only">Close</span>
+					</button>
+				</div>';
+			}else if($success != null && $success == "true"){
+				echo '
+				<div class="alert alert-success" role="alert" style="margin-top:30px;">
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<span class="sr-only">Error:</span>
+					Cadastro realizado com sucesso.
+					<button type="button" class="close" data-dismiss="alert">
+					  <span aria-hidden="true">&times;</span>
+					  <span class="sr-only">Close</span>
+					</button>
+				</div>';
+			}
 			require 'FormularioLogin.html';
 		?>
-		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+		</div>
+		
 		<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/checkbox.js"></script>
+		
 	</body>
 </html>
