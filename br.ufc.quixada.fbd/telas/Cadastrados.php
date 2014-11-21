@@ -79,7 +79,7 @@
 					if($login){
 						echo '
 							<div class="col-xs-2" style="margin-top: 100px;">
-								<h3>Exbir no mapa</h3>
+								<h3>Exibir no mapa</h3>
 								<ul class="nav nav-tabs tabs-left">
 									<li><a href="TelaInicial.php">Todos os Pontos</a></li>
 									<li><a href="Preferencias.php">Por Preferencias</a></li>
