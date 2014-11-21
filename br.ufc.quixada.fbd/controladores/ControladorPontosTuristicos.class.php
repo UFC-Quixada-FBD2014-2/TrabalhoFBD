@@ -132,8 +132,35 @@
 		function pegarTodosOsPontosTuristicos(){
 			try {
 				return $this->repositorioPontosTuristicos->pegarTodosOsTuristas();
-				echo json_encode(ConstantesMensagensFeedback::SUCESSO);
 			} catch (Exception $e){
+				echo json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
+			}
+		}
+		
+		function cadastrarPontoTuristicoFavorito(){
+			
+			if(isset($_POST['idPontoTuristico'])){
+					$idPontoTuristico  = $_POST['idPontoTuristico'];
+					$emailLogado = $_SESSION['email'];
+					
+					try{
+						$this->repositorioPontosTuristicos->cadastrarPontoTuristicoFavorito($idPontoTuristico, $emailLogado);
+						echo json_encode(ConstantesMensagensFeedback::SUCESSO);
+					}catch (Exception $e){
+						echo json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
+					}
+			}
+		}
+		
+		function buscarPontosTuristicosFavoritos(){
+			
+			$emailLogado = $_SESSION['email'];
+			
+			try {
+				return $this->repositorioPontosTuristicos->
+				 pegarPontosTuristicosFavoritosTurista($emailLogado);
+				
+			}catch (Exception $e){
 				echo json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
 			}
 		}
@@ -143,6 +170,7 @@
 	if(isset($_POST['acao'])){
 		$acao = $_POST['acao'];
 		$controlador = new ControladorPontosTuristicos();
+		//TODO : checar login
 		if($acao == "cadastrar"){
 			$retorno = $controlador->cadastrarPontoTuristico();
 			if($retorno == ConstantesMensagensFeedback::SUCESSO){
@@ -150,6 +178,8 @@
 			}
 			
 			echo $retorno;
+		}else if($acao == "cadastrar_ponto_turistico_favorito"){
+			$controlador->cadastrarPontoTuristicoFavorito();
 		}else if($acao == "remover"){
 			$controlador->removerPontoTuristico();
 		}else if($acao == "atualizar"){

@@ -363,5 +363,61 @@
 			}
 		}
 		
+		public function pegarPontosTuristicosFavoritosTurista($email){
+		
+			$sqlQuery = 'SELECT * FROM PontoTuristicoFavoritoTurista as PTFT join PontoTuristico as PT on PTFT.idPontoTuristico = PT.idPontoTuristico WHERE PTFT.emailTurista = ?';
+				
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $email);
+				$pontosTuristicosFavoritos = array();
+				if($stmt->execute()){
+						$resultados = $stmt->fetchAll();
+						foreach ($resultados as $resultado){
+							
+							$idPontoTuristico = $resultado['idpontoturistico'];
+							$nome = $resultado['nome'];
+							$latitude = $resultado['latitude'];
+							$longitude = $resultado['longitude'];
+							$cidade = $resultado['cidade'];
+							$estado = $resultado['estado'];
+							$pais = $resultado['pais'];
+							$rua = $resultado['rua'];
+							$bairro = $resultado['bairro'];
+							$numero = $resultado['numero'];
+							$precoEntrada = $resultado['precodaentrada'];
+							$horarioAbertura = $resultado['horarioabertura'];
+							$horarioFechamento = $resultado['horariofechamento'];
+							$tags = $this->repositorioTagsPontosTuristicos->pegarTagsPontoTuristico($idPontoTuristico);
+								
+							$pontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $bairro, $precoEntrada, $horarioAbertura, $horarioFechamento, $tags, $idPontoTuristico);
+							
+							array_push($pontosTuristicosFavoritos, $pontoTuristico);
+						}
+						return $pontosTuristicosFavoritos;
+				}else{
+					throw new FalhaAoExecutarQuery();
+				}
+			}else{
+				throw new FalhaPrepareStatement();
+			}
+		}
+		
+		public function cadastrarPontoTuristicoFavorito($idPontoTuristico,$emailLogado){
+			
+			$sqlQuery = "INSERT INTO
+							PontoTuristicoFavoritoTurista (emailTurista, idPontoDePartida)
+							VALUES (?, ?)";
+				
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $emailLogado);
+				$stmt->bindParam(2, $idPontoTuristico);
+				
+				if(!$stmt->execute())
+					throw new FalhaAoExecutarQuery();
+			}else{
+				throw new FalhaPrepareStatement();
+			}
+		}
+		
 	}
 ?>

@@ -97,19 +97,56 @@
 						<div class="container">
 				    	 <div class="well profile">
 				            <div class="col-sm-12">
+				            
+				            	<?php 
+				            		$nome = $pontoTuristico->getNome();
+				            		$tags = $tags = $pontoTuristico->getTags();
+				            		$rua = $pontoTuristico->getRua();
+				            		$numero = $pontoTuristico->getNumero();
+				            		$bairro = $pontoTuristico->getBairro();
+				            		$cidade = $pontoTuristico->getCidade();
+				            		$estado = $pontoTuristico->getEstado();
+				            		$horarioAbertura = $pontoTuristico->getHorarioAbertura();
+				            		$horarioFechamento = $pontoTuristico->getHorarioFechamento();
+				            		$precoEntrada = $pontoTuristico->getPrecoEntrada();
+				            	?>
 				                <div class="col-xs-12 col-sm-8">
-				                  <?php echo " <h2>".$pontoTuristico->getNome()."</h2>" ?>
+				                  <?php echo " <h2>".$nome."</h2>" ?>
 				                    <p><strong>Sobre: </strong> Web Designer / UI. </p>
 				                    <p><strong>Descrição: </strong> Read, out with friends, listen to music, draw and learn new things. 
 				                        Lorem Ipsum, Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum
 				                    </p>
-				                    <p><strong>Sobre: </strong> Web Designer / UI. </p>
-				             
+				                   <?php  
+				                   		echo '<p>
+												<strong> Endereco: </strong> 
+													'.$rua.', '.$numero.' - '.
+													$bairro.' - '.$cidade.' - '.
+													$estado.'
+											</p>';
+				                   		
+				                   		echo '
+											<p>
+												<strong> Horário de Abertura: '.$horarioAbertura.' </strong> 
+											</p>
+										';
+				                   		
+				                   		echo '
+											<p>
+												<strong> Horário de Fechamento: '.$horarioFechamento.' </strong>
+											</p>
+										';
+				                   		
+				                   		echo '
+											<p>
+												<strong> Preço de Entrada: R$'.$precoEntrada.' </strong>
+											</p>
+										';
+				                   
+				                   ?>
+				                   
+				                   <br />
 				                    <p><strong>Tags: </strong>
 				                    	<?php 
-				                    	
-					                    	$tags = $pontoTuristico->getTags();
-					                    	
 					                    	for($i = 0; $i < count($tags); $i++){
 					                    		echo '<span class="tags">'.$tags[$i].'</span> ';
 					                    	}
