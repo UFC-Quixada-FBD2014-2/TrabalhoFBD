@@ -24,6 +24,7 @@
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:600"
 			type="text/css" rel="stylesheet" />
 		<link type="text/css" rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
+		<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css"/>
 		<link type="text/css" rel="stylesheet" href="css/bootstrap-vertical-tabs/bootstrap-vertical-tabs.min.css"/>
 		<link href="css/styleTelaInicial.css" type="text/css" rel="stylesheet" />
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -77,7 +78,7 @@
 					if($login){
 						echo '
 							<div class="col-xs-2" style="margin-top: 100px;">
-								<h3>Exbir no mapa</h3>
+								<h3>Exibir no mapa</h3>
 								<ul class="nav nav-tabs tabs-left">
 									<li class="active"><a>Todos os Pontos</a></li>
 									<li><a href="Preferencias.php">Por Preferencias</a></li>
