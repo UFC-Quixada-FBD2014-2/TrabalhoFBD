@@ -25,7 +25,7 @@
 					$resultados = $stmt->fetchAll();
 					foreach ($resultados as $resultado){
 						$tag = $resultado['nome'];
-							
+
 						array_push($tags, $tag);
 					}
 		

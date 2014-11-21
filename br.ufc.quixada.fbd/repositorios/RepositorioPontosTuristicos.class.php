@@ -130,8 +130,8 @@
 			
 			$sqlQuery = 'SELECT * 
 							FROM PontoTuristico PT, EnderecoPontoTuristico EPT 
-							WHERE idPontoTuristico = ? 
-							AND PT.idPontoTuristico = EPT = idPontoTuristico LIMIT 1';
+							WHERE PT.idPontoTuristico = ? 
+							AND PT.idPontoTuristico = EPT.idPontoTuristico LIMIT 1';
 				
 			if($stmt = $this->conexao->prepare($sqlQuery)){
 				$stmt->bindParam(1, $idPontoTuristico);
@@ -141,21 +141,22 @@
 					
 					if($resultado){
 						$nome = $resultado['nome'];
-						$latitude = $resultado['latutude'];
+						$latitude = $resultado['latitude'];
 						$longitude = $resultado['longitude'];
 						$cidade = $resultado['cidade'];
 						$estado = $resultado['estado'];
+						$bairro = $resultado['bairro'];
 						$pais = $resultado['pais'];
 						$rua = $resultado['rua'];
 						$numero = $resultado['numero'];
-						$preco_entrada = $resultado['precoEntrada'];
-						$horario_abertura = $resultado['horarioAbertura'];
-						$horario_fechamento = $resultado['horarioFechamento'];
+						$preco_entrada = $resultado['precodaentrada'];
+						$horario_abertura = $resultado['horarioabertura'];
+						$horario_fechamento = $resultado['horariofechamento'];
 						$tags = $this->repositorioTagsPontosTuristicos->pegarTagsPontoTuristico($idPontoTuristico);
 							
-						$pontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $preco_entrada, $horario_abertura, $horario_fechamento, $tags, $idPontoTuristico);
+						$pontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero,$bairro, $preco_entrada, $horario_abertura, $horario_fechamento, $tags, $idPontoTuristico);
 							
-						return $turista;
+						return $pontoTuristico;
 						
 					}else return null;
 				}else{

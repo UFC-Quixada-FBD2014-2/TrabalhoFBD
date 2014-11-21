@@ -54,7 +54,7 @@ $(document).ready(function () {
             var content = [
                            '<h5>{{nome}}</h5>',
             			   '<p>',
-	            				'<a class="btn btn-link" href="PontoTuristico.php?id={{id}}">',
+	            				'<a class="btn btn-link" href="TelaPontoTuristico.php?idPontoTuristico={{id}}">',
 	            					'Mais >>',
 	            				'</a>',
             			   '</p>'

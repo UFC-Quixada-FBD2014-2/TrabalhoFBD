@@ -16,6 +16,19 @@
 		
 ?>
 
+<?php 
+
+	if(!isset($_GET['idPontoTuristico'])){
+		header("location:TelaInicial.php");
+	}else{
+		$idPontoTuristico = $_GET['idPontoTuristico'];
+	}
+	
+	include_once __DIR__.'/../repositorios/RepositorioPontosTuristicos.class.php';
+	$repositorioPontosTuristicos = new RepositorioPontosTuristicos();
+	$pontoTuristico = $repositorioPontosTuristicos->pegarPontoTuristicoPorId($idPontoTuristico);
+?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -85,17 +98,24 @@
 				    	 <div class="well profile">
 				            <div class="col-sm-12">
 				                <div class="col-xs-12 col-sm-8">
-				                    <h2>Nome Do Local</h2>
+				                  <?php echo " <h2>".$pontoTuristico->getNome()."</h2>" ?>
 				                    <p><strong>Sobre: </strong> Web Designer / UI. </p>
 				                    <p><strong>Descrição: </strong> Read, out with friends, listen to music, draw and learn new things. 
 				                        Lorem Ipsum, Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum
 				                    </p>
+				                    <p><strong>Sobre: </strong> Web Designer / UI. </p>
+				             
 				                    <p><strong>Tags: </strong>
-				                        <span class="tags">bar</span> 
-				                        <span class="tags">bebidas</span>
-				                        <span class="tags">festa</span>
-				                        <span class="tags">algo</span>
+				                    	<?php 
+				                    	
+					                    	$tags = $pontoTuristico->getTags();
+					                    	
+					                    	for($i = 0; $i < count($tags); $i++){
+					                    		echo '<span class="tags">'.$tags[$i].'</span> ';
+					                    	}
+				                    	?>
 				                    </p>
+				                    
 				                </div>             
 				                <div class="col-xs-12 col-sm-4 text-center">
 				                    <figure>
