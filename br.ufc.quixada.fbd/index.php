@@ -1,5 +1,5 @@
 <?php	
-	header("Location: /telas/TelaInicial.php");
+	header("Location: telas/TelaInicial.php");
 ?>
 	
 	

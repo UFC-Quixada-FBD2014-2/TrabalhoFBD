@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="row">
 	    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-			<form role="form" method="POST" action="../controladores/ControladorTuristas.class.php">
+			<form id="form-cadastro" role="form" method="POST" action="../controladores/ControladorTuristas.class.php">
 				<h2>Cadastre-se <small>&Eacute; gratuito.</small></h2>
 				<hr class="colorgraph">
 				<div class="form-group">
@@ -18,14 +18,24 @@
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-6">
 						<div class="form-group">
-							<input required type="password" name="confirmacao_senha" id="confirmacao_senha" class="form-control input-lg" placeholder="Confirme a senha" tabindex="6">
+							<input required type="password" name="confirmacao" id="confirmacao" class="form-control input-lg" placeholder="Confirme a senha" tabindex="6">
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-12">
+						<div class="form-group">
+							<div id="mensagem-senha-erro" class="alert alert-danger" role="alert" style="display:none;">As senhas não correspondem
+								<button type="button" class="close" data-dismiss="alert">
+								  <span aria-hidden="true">&times;</span>
+								  <span class="sr-only">Close</span>
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
 	            <div class="row">
 	                <div class="col-xs-12 col-sm-6 col-md-6">
 	                    <div class="form-group">
-	                		<input required type="text" name="dataDeNascimento" id="dataDeNascimento" class="form-control input-lg" placeholder="Data de Nascimento" tabindex="6">
+	                		<input required type="date" name="dataDeNascimento" id="dataDeNascimento" class="form-control input-lg" placeholder="Data de Nascimento" tabindex="6">
 	                        <p class="help-block">Data de Nascimento</p>
 	        			</div>
 	                </div>
@@ -62,13 +72,7 @@
 					<h4 class="modal-title" id="myModalLabel">Termos e condições</h4>
 				</div>
 				<div class="modal-body">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+					<h2>Política de privacidade para <a href='http://localhost/TrabalhoFBD/TrabalhoFBD/br.ufc.quixada.fbd/telas/CadastroTurista.php'>Turista</a></h2><p>Todas as suas informações pessoais recolhidas, serão usadas para o ajudar a tornar a sua visita no nosso site o mais produtiva e agradável possível.</p><p>A garantia da confidencialidade dos dados pessoais dos utilizadores do nosso site é importante para o Turista.</p><p>Todas as informações pessoais relativas a membros, assinantes, clientes ou visitantes que usem o Tourista serão tratadas em concordância com a Lei da Proteção de Dados Pessoais de 26 de outubro de 1998 (Lei n.º 67/98).</p><p>A informação pessoal recolhida pode incluir o seu nome, e-mail, número de telefone e/ou telemóvel, morada, data de nascimento e/ou outros.</p><p>O uso do Turista pressupõe a aceitação deste Acordo de privacidade. A equipa do Turista reserva-se ao direito de alterar este acordo sem aviso prévio. Deste modo, recomendamos que consulte a nossa política de <a href='http://politicaprivacidade.com/' title='Política de privacidade' style='text-decoration:none;'>privacidade</a> com regularidade de forma a estar sempre atualizado.</p><h2>Os anúncios</h2><p>Tal como outros websites, coletamos e utilizamos informação contida nos anúncios. A informação contida nos anúncios, inclui o seu endereço IP (Internet Protocol), o seu ISP (Internet Service Provider, como o Sapo, Clix, ou outro), o browser que utilizou ao visitar o nosso website (como o Internet Explorer ou o Firefox), o tempo da sua visita e que páginas visitou dentro do nosso website.</p><h2>Ligações a Sites de terceiros</h2><p>O Turista possui ligações para outros sites, os quais, a nosso ver, podem conter informações / ferramentas úteis para os nossos visitantes. A nossa política de privacidade não é aplicada a sites de terceiros, pelo que, caso visite outro site a partir do nosso deverá ler a politica de privacidade do mesmo.</p><p>Não nos responsabilizamos pela política de privacidade ou conteúdo presente nesses mesmos sites.</p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Eu aceito</button>

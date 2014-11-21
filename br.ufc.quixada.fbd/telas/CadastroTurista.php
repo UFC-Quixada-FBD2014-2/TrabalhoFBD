@@ -48,6 +48,17 @@
 		<script type="text/javascript"
 			src="js/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
 		<script type="text/javascript" src="js/tagsInputCadastro.js"></script>
+		<script type="text/javascript">
+			$('#form-cadastro').submit(function(){
+				var senha = $("#senha").val();
+				var confirmacao = $("#confirmacao").val();
+
+				if(senha != confirmacao){
+					$("#mensagem-senha-erro").show();
+					return false;
+				}
+			});
+		</script>
 	</footer>
 
 </html>
