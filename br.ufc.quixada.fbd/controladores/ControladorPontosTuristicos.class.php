@@ -152,7 +152,7 @@
 			}
 		}
 		
-		function buscarPontosTuristicosFavoritos(){
+		function pegarPontosTuristicosFavoritos(){
 			
 			$emailLogado = $_SESSION['email'];
 			
@@ -164,7 +164,6 @@
 				echo json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
 			}
 		}
-		
 	}
 	
 	if(isset($_POST['acao'])){
@@ -190,6 +189,8 @@
 			$controlador->pegarTodosOsPontosTuristicosVisitadosPorUmTurista();
 		}else if($acao == "pegar_todos_pontos_turisticos"){
 			$controlador->pegarTodosOsPontosTuristicos();
+		}else if($acao == "pegar_pontos_turisticos_favoritos"){
+			$controlador->pegarPontosTuristicosFavoritos();
 		}else{
 			
 		}

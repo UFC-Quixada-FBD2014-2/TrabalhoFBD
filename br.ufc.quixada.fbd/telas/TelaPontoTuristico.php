@@ -68,7 +68,7 @@
 	                	<?php 
 	                		if($login){
 	                			
-	                			echo '
+	                			/*echo '
 			                		<div class="dropdown">
 				                		<button id="dLabel" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
 											<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
@@ -80,7 +80,7 @@
 					                		<li role="presentation" class="divider"></li>
 					                		<li role="presentation"><a role="menuitem" tabindex="-1" href="Logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Sair</a></li>
 				                		</ul>
-			                		</div>';
+			                		</div>';*/
 							}else{
 								echo '
 	                				<a href="CadastroTurista.php" class="btn btn-link btn-primary" id="cadastrar" name="cadastrar">Cadastrar-se</a> 
@@ -188,7 +188,19 @@
 				                <div class="col-xs-12 col-sm-4 emphasis">
 				                    <h2><strong>245</strong></h2>                    
 				                    <p><small>Marcaram como favorito</small></p>
-				                    <button class="btn btn-info btn-block"><span class="fa fa-star"></span> Adicionar aos Favoritos </button>
+				                    <?php 
+				                    	if($login){
+				                    		$isFavorito = $repositorioPontosTuristicos->isPontoTuristicoFavorito($idPontoTuristico, $email);
+				                    		if($isFavorito){
+				                    			echo '<button class="btn btn-info btn-block"><span class="fa fa-star"></span> Favorito Ja</button>';
+				                    		}else{
+				                    			echo '<button class="btn btn-info btn-block"><span class="fa fa-star"></span> Adicionar aos Favoritos </button>';
+				                    		}
+				                    	}else{
+				                    		echo '<button class="btn btn-info btn-block"><span class="fa fa-star"></span> NNAdicionar aos Favoritos </button>';
+				                    	}
+				                    ?>
+				                    
 				                </div>
 				                
 				                <div class="col-xs-12 col-sm-4 emphasis">
@@ -204,7 +216,7 @@
 				</div>
 				<?php 
 					if($login){
-						echo '
+						/*echo '
 							<div class="col-xs-2" style="margin-top:100px;">
 								<h3>Exbir no mapa</h3>							    
 								<ul class="nav nav-tabs tabs-left">
@@ -225,7 +237,7 @@
 										
 								  	</div>
 							    </div>
-							</div>';
+							</div>';*/ //TODO
 					}else{
 						
 					}

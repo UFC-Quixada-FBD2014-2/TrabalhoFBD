@@ -419,5 +419,26 @@
 			}
 		}
 		
+		public function isPontoTuristicoFavorito($idPontoTuristico, $emailLogado){
+			
+			$sqlQuery = 'SELECT * FROM PontoTuristicoFavoritoTurista WHERE idPontoTuristico = ? AND emailTurista = ?';
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $idPontoTuristico);
+				$stmt->bindParam(2, $emailLogado);
+				
+				if($stmt->execute()){
+					if($stmt->rowCount() == 1){
+						return true;	
+					}else{
+						return false;
+					}
+				}else{
+					throw new FalhaAoExecutarQuery();
+				}
+			}else{
+				throw new FalhaPrepareStatement();
+			}
+		}
+		
 	}
 ?>
