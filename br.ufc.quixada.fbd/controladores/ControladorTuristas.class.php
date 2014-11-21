@@ -17,7 +17,7 @@
 		}
 		
 		function cadastrarTurista(){
-			if(isset($_POST['nome'], $_POST['senha'], $_POST['dataDeNascimento'], $_POST['preferencias'], $_POST['email'])){
+			if(isset($_POST['nome'], $_POST['senha'], $_POST['dataDeNascimento'], $_POST['email'])){
 				
 			
 				$nome = $_POST['nome'];

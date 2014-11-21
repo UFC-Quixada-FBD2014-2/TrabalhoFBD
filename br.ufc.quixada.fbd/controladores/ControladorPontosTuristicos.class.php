@@ -11,17 +11,16 @@
 	Class ControladorPontosTuristicos{
 		
 		private $repositorioPontosTuristicos;
-		private $controladorLogin;
 			
 		function __construct(){
 			$this->repositorioPontosTuristicos = new RepositorioPontosTuristicos();
-			$this->controladorLogin = new ControladorLogin();
 		}
 		
 		function cadastrarPontoTuristico(){
 			if(isset($_POST['nome'], $_POST['latitude'], $_POST['longitude'], $_POST['rua'], $_POST['cidade'],
-					 $_POST['estado'],	$_POST['pais'], $_POST['tags'], $_POST['bairro'], $_POST['numero'],
-					 $_POST['precoEntrada'], $_POST['horarioAbertura'], $_POST['horarioFechamento'])){
+					 $_POST['estado'],	$_POST['pais'], $_POST['bairro'])){
+				
+				
 				
 				$nome = $_POST['nome'];
 				$latitude = $_POST['latitude'];
@@ -37,7 +36,6 @@
 				$horarioAbertura = $_POST['horarioAbertura'];
 				$horarioFechamento = $_POST['horarioFechamento'];
 				
-				$this->controladorLogin->iniciarSessao();
 				
 				$emailLogado = $_SESSION['email'];
 				
@@ -133,7 +131,7 @@
 			try {
 				return $this->repositorioPontosTuristicos->pegarTodosOsTuristas();
 			} catch (Exception $e){
-				echo json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
+				return json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
 			}
 		}
 		
@@ -196,13 +194,14 @@
 		if($acao == "cadastrar"){
 			$retorno = $controlador->cadastrarPontoTuristico();
 			if($retorno == ConstantesMensagensFeedback::SUCESSO){
-				//TODO: modificar tela
+				header("Location: ../telas/TelaInicial.php?success=false");
+			}else{
+				header("Location: ../telas/CadastroPontoTuristico.php?success=false");
 			}
 			
-			echo $retorno;
 		}else if($acao == "cadastrar_ponto_turistico_favorito"){
 			$retorno = $controlador->cadastrarPontoTuristicoFavorito();
-			echo $retorno;
+			
 		}else if($acao == "remover"){
 			$controlador->removerPontoTuristico();
 		}else if($acao == "atualizar"){

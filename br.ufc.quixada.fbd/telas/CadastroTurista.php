@@ -38,7 +38,6 @@
 					</button>
 				</div>';
 		}
-	
 		require 'FormularioCadastroTurista.html';
 	?>
 	</div>

@@ -28,7 +28,11 @@
 			$horarioAbertura = $novoPontoTuristico->getHorarioAbertura();
 			$horarioFechamento = $novoPontoTuristico->getHorarioFechamento();
 			$precoEntrada = $novoPontoTuristico->getPrecoEntrada();
-				
+			
+			if($horarioAbertura == null)$horarioAbertura = "";
+			if($horarioFechamento == null)$horarioFechamento = "";
+			if($precoEntrada == null)$precoEntrada = 0;
+			
 			$sqlQuery = "INSERT INTO 
 							PontoTuristico (nome, latitude, longitude, precoDaEntrada, horarioAbertura, horarioFechamento) 
 							VALUES (?, ?, ?, ?, ?, ?) RETURNING idPontoTuristico";

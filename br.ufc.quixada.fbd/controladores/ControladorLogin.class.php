@@ -107,7 +107,7 @@
 			$resultado = $controladorLogin->realizarLogin();
 			
 			if($resultado == ConstantesMensagensFeedback::SUCESSO){
-				header("Location:../telas/TelaInicial.php");
+				header('Location: ' . $_SERVER['HTTP_REFERER']);
 			}else{
 				header("Location: ../telas/Login.php?success=false");
 			}

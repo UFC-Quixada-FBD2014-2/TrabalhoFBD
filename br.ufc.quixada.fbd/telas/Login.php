@@ -47,7 +47,7 @@
 			}else if($success != null && $success == "true"){
 				echo '
 				<div class="alert alert-success" role="alert" style="margin-top:30px;">
-					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 					<span class="sr-only">Error:</span>
 					Cadastro realizado com sucesso.
 					<button type="button" class="close" data-dismiss="alert">

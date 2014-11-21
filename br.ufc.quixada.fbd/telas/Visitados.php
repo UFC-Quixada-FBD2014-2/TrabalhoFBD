@@ -22,7 +22,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>Tourista</title>
+		<title>Turista</title>
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:600"
 			type="text/css" rel="stylesheet" />
 		<link type="text/css" rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
@@ -96,6 +96,7 @@
 												id="txtEndereco" name="txtEndereco" class="input-lg" /> <input
 												type="button" id="btnEndereco" name="btnEndereco"
 												value="Mostrar no mapa" class="input-lg" />
+											<a href="CadastroPontoTuristico.php" class="btn btn-success"><span class="glyphicon glyphicon-map-marker"></span>Adicionar Ponto</a>
 										</div>
 										<div id="mapa"></div>
 									</div>
@@ -111,15 +112,17 @@
 	
 		</div>
 	
+		<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+		
+		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
 		<script
 			src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBHju8OGAGzK6TSjG1DI8H8MNqiuFykD00&sensor=false"></script>
-		<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+		
 		<script type="text/javascript" src="js/google-maps/markerclusterer.js"></script>
 		<script type="text/javascript" src="js/google-maps/infoBox.js"></script>
 		<script type="text/javascript" src="js/jquery-autocomplete.js"></script>
 		<script type="text/javascript" src="js/mustache.js"></script>
 		<script type="text/javascript" src="js/mapaTelaInicialVisitados.js"></script>
-		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
 	
 	</body>
 </html>

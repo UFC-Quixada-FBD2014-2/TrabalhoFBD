@@ -66,7 +66,7 @@
 						<div class="row">
 			                <div class="col-xs-12 col-sm-6 col-md-6">
 			                    <div class="form-group">
-			                		<input required type="text" value="'.$turista->getDataDeNascimento().'" name="dataDeNascimento" id="dataDeNascimento" class="form-control input-lg" placeholder="Data de Nascimento" tabindex="6">
+			                		<input required type="date" value="'.$turista->getDataDeNascimento().'" name="dataDeNascimento" id="dataDeNascimento" class="form-control input-lg" placeholder="Data de Nascimento" tabindex="6">
 			                        <p class="help-block">Data de Nascimento</p>
 			        			</div>
 			                </div>
