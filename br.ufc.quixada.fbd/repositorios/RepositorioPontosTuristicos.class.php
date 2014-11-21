@@ -19,7 +19,7 @@
 			$this->repositorioEnderecoPontosTuristicos = new RepositorioEnderecoPontosTuristicos();
 		}
 		
-		public function cadastrar(PontoTuristico $novoPontoTuristico){
+		public function cadastrar(PontoTuristico $novoPontoTuristico, $emailLogado){
 			
 			
 			$nome = $novoPontoTuristico->getNome();
@@ -43,19 +43,17 @@
 				$stmt->bindParam(5, $horarioAbertura);
 				$stmt->bindParam(6, $horarioFechamento);
 				
-				//$this->conexao->beginTransaction();
 				
 				if($idPontoTuristico = $stmt->execute()){
 					$idPontoTuristico = $stmt->fetch();
 					$novoPontoTuristico->setId($idPontoTuristico[0]);
-					echo $idPontoTuristico[0];
+					
 					
 					try{
 						$this->repositorioEnderecoPontosTuristicos->cadastrarEnderecoPontoTuristico($novoPontoTuristico);
 						$this->repositorioTagsPontosTuristicos->cadastrarTagsPontoTuristico($novoPontoTuristico);
-						//$this->conexao->commit();
+						$this->salvarCadastradoPor($idPontoTuristico[0], $emailLogado);
 					}catch(Exception $e){
-						//$this->conexao->rollBack();
 					}
 						
 				}else{
@@ -107,15 +105,13 @@
 				$stmt->bindParam(6, $horarioFechamento);
 				$stmt->bindParam(7, $idPontoTuristico);
 				
-				$this->conexao->beginTransaction();
 				if($stmt->execute()){
 					try{
 						$this->repositorioTagsPontosTuristicos->removerTagsPontoTuristico($idPontoTuristico);
 						$this->repositorioTagsPontosTuristicos->cadastrarTagsPontoTuristico($turista);
 						$this->repositorioEnderecoPontosTuristicos->atualizarEnderecoPontoTuristico($pontoTuristico);
-						$this->conexao->commit();
 					}catch (Exception $e){
-						$this->conexao->rollBack();
+						throw $e;
 					}
 				}else{
 					throw new FalhaAoExecutarQuery();
@@ -292,6 +288,68 @@
 							
 						$pontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $bairro, $precoEntrada, $horarioAbertura, $horarioFechamento, $tags, $idPontoTuristico);
 												
+						array_push($pontosTuristicos, $pontoTuristico);
+					}
+						
+					return $pontosTuristicos;
+						
+				}else{
+					throw new FalhaAoExecutarQuery();
+				}
+			}else{
+				throw new FalhaPrepareStatement();
+			}
+		}
+		
+		private function salvarCadastradoPor($idPontoTuristico, $emailLogado){
+			$sqlQuery = 'INSERT INTO Cadastrou VALUES (?, ?)';
+			
+			
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $idPontoTuristico);
+				$stmt->bindParam(2, $emailLogado);
+				if($stmt->execute()){
+					
+				}else{
+					throw new FalhaAoExecutarQuery();
+				}
+			}else{
+				throw new FalhaPrepareStatement();
+			}
+		}
+		
+		public function pegarTodosOsPontosTuristicosCadastradosPeloUsuario($email){
+			$sqlQuery = 'SELECT *
+							FROM PontoTuristico PT, EnderecoPontoTuristico EPT, Cadastrou C
+							WHERE EPT.idPontoTuristico = PT.idPontoTuristico
+							AND C.idPontoTuristico = PT.idPontoTuristico
+							AND C.emailTurista = ?';
+				
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $email);
+				if($stmt->execute()){
+					$pontosTuristicos = Array();
+						
+					$resultados = $stmt->fetchAll();
+					foreach($resultados as $resultado){
+							
+						$idPontoTuristico = $resultado['idpontoturistico'];
+						$nome = $resultado['nome'];
+						$latitude = $resultado['latitude'];
+						$longitude = $resultado['longitude'];
+						$cidade = $resultado['cidade'];
+						$estado = $resultado['estado'];
+						$pais = $resultado['pais'];
+						$rua = $resultado['rua'];
+						$bairro = $resultado['bairro'];
+						$numero = $resultado['numero'];
+						$precoEntrada = $resultado['precodaentrada'];
+						$horarioAbertura = $resultado['horarioabertura'];
+						$horarioFechamento = $resultado['horariofechamento'];
+						$tags = $this->repositorioTagsPontosTuristicos->pegarTagsPontoTuristico($idPontoTuristico);
+							
+						$pontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $bairro, $precoEntrada, $horarioAbertura, $horarioFechamento, $tags, $idPontoTuristico);
+							
 						array_push($pontosTuristicos, $pontoTuristico);
 					}
 						

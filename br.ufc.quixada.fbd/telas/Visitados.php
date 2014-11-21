@@ -12,6 +12,8 @@
 		$email = $_SESSION['email'];
 		$repositorioTuristas = new RepositorioTuristas();
 		$turista = $repositorioTuristas->pegarTuristaPorEmail($email);
+	}else{
+		header("Location: TelaInicial.php");
 	}
 		
 ?>
@@ -60,7 +62,7 @@
 				                		</button>
 				                		<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
 					                		<li role="presentation"><a role="menuitem" tabindex="-1" href="EditarPerfil.php"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Editar Perfil</a></li>
-					                		<li role="presentation"><a role="menuitem" tabindex="-1" href="CadastroPontoTuristico.php"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Adicionar Ponto Turistico</a></li>
+					                		<li role="presentation"><a role="menuitem" tabindex="-1" href="CadastroPontoTuristico.php"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Adicionar Ponto Turístico</a></li>
 					                		<li role="presentation" class="divider"></li>
 					                		<li role="presentation"><a role="menuitem" tabindex="-1" href="Logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Sair</a></li>
 				                		</ul>
@@ -76,27 +78,30 @@
 				<?php 
 					if($login){
 						echo '
-							<div class="col-xs-2" style="margin-top:100px;">	
-								<h3>Exbir no mapa</h3>						    
+							<div class="col-xs-2" style="margin-top: 100px;">
+								<h3>Exbir no mapa</h3>
 								<ul class="nav nav-tabs tabs-left">
-							      	<li><a href="TelaInicial.php">Todos os Pontos</a></li>
-							      	<li><a href="Preferencias.php">Por Preferencias</a></li>
-							      	<li class="active"><a>Pontos Visitados</a></li>
-							    </ul>
+									<li><a href="TelaInicial.php">Todos os Pontos</a></li>
+									<li><a href="Preferencias.php">Por Preferencias</a></li>
+									<li class="active"><a>Pontos Visitados</a></li>
+									<li><a href="Cadastrados.php">Seus Pontos</a></li>
+								</ul>
 							</div>
 							
 							<div class="col-xs-10">
-							    <div class="tab-content">
-							      	<div class="tab-pane active" id="todos">
-										<div class="campos" style="margin-top:0;margin-left:0;">
-											<label for="txtEndereco">Endereço:</label>
-					                		<input type="text" id="txtEndereco" name="txtEndereco" class="input-lg"/>
-					                		<input type="button" id="btnEndereco" name="btnEndereco" value="Mostrar no mapa" class="input-lg"/>
+								<div class="tab-content">
+									<div class="tab-pane active" id="todos">
+										<div class="campos" style="margin-top: 0; margin-left: 0;">
+											<label for="txtEndereco">Endereço:</label> <input type="text"
+												id="txtEndereco" name="txtEndereco" class="input-lg" /> <input
+												type="button" id="btnEndereco" name="btnEndereco"
+												value="Mostrar no mapa" class="input-lg" />
 										</div>
 										<div id="mapa"></div>
-								  	</div>
-							    </div>
-							</div>';
+									</div>
+								</div>
+							</div>
+						';
 					}else{
 						echo '<div id="mapa"></div>';
 					}
@@ -112,7 +117,7 @@
 		<script type="text/javascript" src="js/google-maps/markerclusterer.js"></script>
 		<script type="text/javascript" src="js/google-maps/infoBox.js"></script>
 		<script type="text/javascript" src="js/jquery-autocomplete.js"></script>
-		
+		<script type="text/javascript" src="js/mustache.js"></script>
 		<script type="text/javascript" src="js/mapaTelaInicialVisitados.js"></script>
 		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
 	

@@ -6,13 +6,16 @@
 	include_once __DIR__.'/../enumeration/ConstantesMensagensFeedback.class.php';
 	include_once __DIR__.'/../repositorios/FalhaPontoTuristicoNaoCadastrado.class.php';
 	include_once __DIR__.'/../entidades/PontoTuristico.class.php';
+	include_once __DIR__.'/../controladores/ControladorLogin.class.php';
 	
 	Class ControladorPontosTuristicos{
 		
 		private $repositorioPontosTuristicos;
+		private $controladorLogin;
 			
 		function __construct(){
 			$this->repositorioPontosTuristicos = new RepositorioPontosTuristicos();
+			$this->controladorLogin = new ControladorLogin();
 		}
 		
 		function cadastrarPontoTuristico(){
@@ -34,10 +37,14 @@
 				$horarioAbertura = $_POST['horarioAbertura'];
 				$horarioFechamento = $_POST['horarioFechamento'];
 				
+				$this->controladorLogin->iniciarSessao();
+				
+				$emailLogado = $_SESSION['email'];
 				
 				$novoPontoTuristico = new PontoTuristico($nome, $latitude, $longitude, $cidade, $estado, $pais, $rua, $numero, $bairro, $precoEntrada, $horarioAbertura, $horarioFechamento, $tags);
 				try {
-					$this->repositorioPontosTuristicos->cadastrar($novoPontoTuristico);
+					$this->repositorioPontosTuristicos->cadastrar($novoPontoTuristico, $emailLogado);
+					
 					return ConstantesMensagensFeedback::SUCESSO;
 				} catch (Exception $e){
 					return ConstantesMensagensFeedback::FALHA_NO_BANCO;
