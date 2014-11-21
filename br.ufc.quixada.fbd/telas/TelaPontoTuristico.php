@@ -186,18 +186,21 @@
 				                    <button class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Estive aqui </button>
 				                </div>
 				                <div class="col-xs-12 col-sm-4 emphasis">
-				                    <h2><strong>245</strong></h2>                    
+				                    <h2><strong id="qtd-favoritos"><?php echo $repositorioPontosTuristicos->pegarQuantidadeDeFavoritados($idPontoTuristico);?></strong></h2>                    
 				                    <p><small>Marcaram como favorito</small></p>
 				                    <?php 
 				                    	if($login){
 				                    		$isFavorito = $repositorioPontosTuristicos->isPontoTuristicoFavorito($idPontoTuristico, $email);
 				                    		if($isFavorito){
-				                    			echo '<button class="btn btn-info btn-block"><span class="fa fa-star"></span> Favorito Ja</button>';
+				                    			echo '<button class="btn btn-info btn-block" title="Clique aqui para desfavoritar" id="botao-favorito-favoritado"><span class="fa fa-star"></span> Favoritado <span class="fa fa-check"></span></button>';
+				                    			echo '<button class="btn btn-info btn-block" id="botao-favorito-nao-favoritado" style="display:none;"><span class="fa fa-star"></span> Adicionar aos Favoritos </button>';
 				                    		}else{
-				                    			echo '<button class="btn btn-info btn-block"><span class="fa fa-star"></span> Adicionar aos Favoritos </button>';
+				                    			echo '<button class="btn btn-info btn-block" id="botao-favorito-nao-favoritado"><span class="fa fa-star"></span> Adicionar aos Favoritos </button>';
+				                    			echo '<button class="btn btn-info btn-block" title="Clique aqui para desfavoritar" id="botao-favorito-favoritado" style="display:none;"><span class="fa fa-star"></span> Favoritado <span class="fa fa-check"></span></button>';
 				                    		}
 				                    	}else{
-				                    		echo '<button class="btn btn-info btn-block"><span class="fa fa-star"></span> NNAdicionar aos Favoritos </button>';
+				                    		echo '<button class="btn btn-info btn-block" id="botao-favorito-nao-favoritado"><span class="fa fa-star"></span> Adicionar aos Favoritos </button>';
+				                    		echo '<button class="btn btn-info btn-block" title="Clique aqui para desfavoritar" id="botao-favorito-favoritado" style="display:none;"><span class="fa fa-star"></span> Favoritado <span class="fa fa-check"></span></button>';
 				                    	}
 				                    ?>
 				                    
@@ -249,6 +252,41 @@
 	
 		<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
-	
+		<script>
+			$(document).ready(function(){
+				
+				$("#botao-favorito-nao-favoritado").click(function(){
+
+					
+					$.ajax({
+						url: "../controladores/ControladorPontosTuristicos.class.php",
+						type:"POST",
+						data:{acao: "cadastrar_ponto_turistico_favorito", idPontoTuristico: <?php echo $idPontoTuristico?>},
+						success:function(data){
+							$("#botao-favorito-nao-favoritado").css('display', 'none');
+							$("#botao-favorito-favoritado").css('display', 'block');
+							var qtd = $("#qtd-favoritos").html();
+							$("#qtd-favoritos").text(parseInt(qtd)+1);
+						}
+					  });
+					  
+				});
+
+				$("#botao-favorito-favoritado").click(function(){
+					$.ajax({
+						url: "../controladores/ControladorPontosTuristicos.class.php",
+						type:"POST",
+						data:{acao: "remover-ponto-turistico-dos-favoritos", idPontoTuristico: <?php echo $idPontoTuristico?>},
+						success:function(data){
+							$("#botao-favorito-favoritado").css('display', 'none');
+							$("#botao-favorito-nao-favoritado").css('display', 'block');
+							var qtd = $("#qtd-favoritos").html();
+							$("#qtd-favoritos").text(parseInt(qtd)-1);
+						}
+					  });
+				});
+			  
+			});
+		</script>
 	</body>
 </html>

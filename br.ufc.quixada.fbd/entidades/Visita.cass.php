@@ -5,9 +5,9 @@
 		private $idPontoTuristico;
 		private $data;
 		
-		function __construct($data, $emailTurista, $idPontoTuristo){
+		function __construct($data, $emailTurista, $idPontoTuristico){
 			$this->data = $data;
-			$this->idPontoTuristico = $idPontoTuristo;
+			$this->idPontoTuristico = $idPontoTuristico;
 			$this->emailTurista = $emailTurista;
 		}
 		

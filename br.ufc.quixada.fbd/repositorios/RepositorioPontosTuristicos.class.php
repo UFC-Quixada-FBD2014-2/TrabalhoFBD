@@ -405,14 +405,14 @@
 		public function cadastrarPontoTuristicoFavorito($idPontoTuristico,$emailLogado){
 			
 			$sqlQuery = "INSERT INTO
-							PontoTuristicoFavoritoTurista (emailTurista, idPontoDePartida)
+							PontoTuristicoFavoritoTurista (emailTurista, idPontoTuristico)
 							VALUES (?, ?)";
 				
 			if($stmt = $this->conexao->prepare($sqlQuery)){
 				$stmt->bindParam(1, $emailLogado);
 				$stmt->bindParam(2, $idPontoTuristico);
 				
-				if(!$stmt->execute())
+				if($stmt->execute() == false)
 					throw new FalhaAoExecutarQuery();
 			}else{
 				throw new FalhaPrepareStatement();
@@ -435,6 +435,37 @@
 				}else{
 					throw new FalhaAoExecutarQuery();
 				}
+			}else{
+				throw new FalhaPrepareStatement();
+			}
+		}
+		
+		public function removerPontoTuristicoDosFavoritosTurista($idPontoTuristico, $emailLogado){
+			
+			$sqlQuery = 'DELETE FROM PontoTuristicoFavoritoTurista WHERE idPontoTuristico = ? AND emailTurista = ?';
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $idPontoTuristico);
+				$stmt->bindParam(2, $emailLogado);
+				
+				if(!$stmt->execute()){
+					throw new FalhaAoExecutarQuery();
+				}
+			}else{
+				throw new FalhaPrepareStatement();
+			}
+		}
+		
+		public function pegarQuantidadeDeFavoritados($idPontoTuristico){
+			
+			$sqlQuery = 'SELECT DISTINCT emailTurista From PontoTuristicoFavoritoTurista WHERE idPontoTuristico = ?';
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $idPontoTuristico);
+				
+				if(!$stmt->execute())
+					throw new FalhaAoExecutarQuery();
+					
+				return $stmt->rowCount();
+				
 			}else{
 				throw new FalhaPrepareStatement();
 			}

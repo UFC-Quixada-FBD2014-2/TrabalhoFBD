@@ -152,6 +152,21 @@
 			}
 		}
 		
+		function removerPontoTuristicoDosFavoritosTurista(){
+			
+			if(isset($_POST['idPontoTuristico'])){
+				$idPontoTuristico  = $_POST['idPontoTuristico'];
+				$emailLogado = $_SESSION['email'];
+					
+				try{
+					$this->repositorioPontosTuristicos->removerPontoTuristicoDosFavoritosTurista($idPontoTuristico, $emailLogado);
+					echo json_encode(ConstantesMensagensFeedback::SUCESSO);
+				}catch (Exception $e){
+					echo json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
+				}
+			}
+		}
+		
 		function pegarPontosTuristicosFavoritos(){
 			
 			$emailLogado = $_SESSION['email'];
@@ -169,7 +184,14 @@
 	if(isset($_POST['acao'])){
 		$acao = $_POST['acao'];
 		$controlador = new ControladorPontosTuristicos();
-		//TODO : checar login
+		$controladorLogin = new ControladorLogin();
+		$controladorLogin->iniciarSessao();
+		
+		if(!$controladorLogin->checarLogin()){
+			exit(); //TODO : REVER
+		}
+		
+		
 		if($acao == "cadastrar"){
 			$retorno = $controlador->cadastrarPontoTuristico();
 			if($retorno == ConstantesMensagensFeedback::SUCESSO){
@@ -191,6 +213,8 @@
 			$controlador->pegarTodosOsPontosTuristicos();
 		}else if($acao == "pegar_pontos_turisticos_favoritos"){
 			$controlador->pegarPontosTuristicosFavoritos();
+		}else if($acao == "remover-ponto-turistico-dos-favoritos"){
+			$controlador->removerPontoTuristicoDosFavoritosTurista();
 		}else{
 			
 		}
