@@ -7,13 +7,17 @@
 	include_once __DIR__.'/../repositorios/FalhaPontoTuristicoNaoCadastrado.class.php';
 	include_once __DIR__.'/../entidades/PontoTuristico.class.php';
 	include_once __DIR__.'/../controladores/ControladorLogin.class.php';
+	include_once __DIR__.'/../repositorios/RepositorioVisitas.class.php';
+	include_once __DIR__.'/../entidades/Visita.class.php';
 	
 	Class ControladorPontosTuristicos{
 		
 		private $repositorioPontosTuristicos;
+		private $repositorioVisitas;
 			
 		function __construct(){
 			$this->repositorioPontosTuristicos = new RepositorioPontosTuristicos();
+			$this->repositorioVisitas =  new RepositorioVisitas();
 		}
 		
 		function cadastrarPontoTuristico(){
@@ -184,16 +188,40 @@
 			
 			if(isset($_POST['valorAvaliado'], $_POST['idPontoTuristico'])){
 				
+				$valorAvaliado = $_POST['valorAvaliado'];
+				$idPontoTuristico = $_POST['idPontoTuristico'];
+				
 				try {
-					return $this->repositorioPontosTuristicos->
-					pegarPontosTuristicosFavoritosTurista($emailLogado);
+					if($this->repositorioPontosTuristicos->pegarValorPontoTuristicoJaAvaliadoPelo($emailLogado, $idPontoTuristico) == 0){
+						$this->repositorioPontosTuristicos->cadastrarAvaliacaoPontoTuristico($valorAvaliado, $idPontoTuristico, $emailLogado);
+					}else{
+						$this->repositorioPontosTuristicos->atualizarAvaliacaoPontoTuristico($valorAvaliado, $idPontoTuristico, $emailLogado);
+					}
 						
 				}catch (Exception $e){
 					return json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
 				}
 			}
 			
-			
+		}
+		
+		function cadastrarVisita(){
+		
+			$emailLogado = $_SESSION['email'];
+			if(isset($_POST['idPontoTuristico'])){
+				$idPontoTuristico = $_POST['idPontoTuristico'];
+				$data = time();
+					
+				$visita = new Visita($data, $emailLogado, $idPontoTuristico);
+				
+					
+				try {
+					$this->repositorioVisitas->cadastrar($visita);
+				}catch (Exception $e){
+					return json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
+				}
+					
+			}
 		}
 	}
 	
@@ -234,6 +262,10 @@
 			$controlador->pegarPontosTuristicosFavoritos();
 		}else if($acao == "remover-ponto-turistico-dos-favoritos"){
 			$controlador->removerPontoTuristicoDosFavoritosTurista();
+		}else if($acao == "cadastrar_avaliacao_ponto_turistico"){
+			$controlador->cadastrarAvaliacaoPontoTuristico();
+		}else if($acao == "add-visita"){
+			$controlador->cadastrarVisita();
 		}else{
 			
 		}

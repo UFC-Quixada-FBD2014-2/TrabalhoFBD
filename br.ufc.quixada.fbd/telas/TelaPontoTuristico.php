@@ -25,7 +25,9 @@
 	}
 	
 	include_once __DIR__.'/../repositorios/RepositorioPontosTuristicos.class.php';
+	include_once __DIR__.'/../repositorios/RepositorioVisitas.class.php';
 	$repositorioPontosTuristicos = new RepositorioPontosTuristicos();
+	$repositorioVisitas = new RepositorioVisitas();
 	$pontoTuristico = $repositorioPontosTuristicos->pegarPontoTuristicoPorId($idPontoTuristico);
 ?>
 
@@ -113,9 +115,6 @@
 				                <div class="col-xs-12 col-sm-8">
 				                  <?php echo " <h2>".$nome."</h2>" ?>
 				                    <p><strong>Sobre: </strong> Web Designer / UI. </p>
-				                    <p><strong>Descrição: </strong> Read, out with friends, listen to music, draw and learn new things. 
-				                        Lorem Ipsum, Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum
-				                    </p>
 				                   <?php  
 				                   		echo '<p>
 												<strong> Endereco: </strong> 
@@ -164,6 +163,9 @@
 										        	$valorAvaliado = 0;
 										        	if($login){
 										        		$valorAvaliado = $repositorioPontosTuristicos->pegarValorPontoTuristicoJaAvaliadoPelo($email, $idPontoTuristico);
+										        		if($valorAvaliado == -1){
+										        			$valorAvaliado = 0;
+										        		}
 										        	}
 										        	else
 										        		$valorAvaliado = 0;
@@ -185,9 +187,29 @@
 				            </div>            
 				            <div class="col-xs-12 divider text-center">
 				                <div class="col-xs-12 col-sm-4 emphasis">
-				                    <h2><strong> 1 </strong></h2>                    
+				                    <h2><strong id="qtd-estive"> <?php echo $repositorioVisitas->buscarTotalVisitasPelo($idPontoTuristico) ?> </strong></h2>                    
 				                    <p><small>Estiveram aqui</small></p>
-				                    <button class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Estive aqui </button>
+				                    <?php 
+				                    	if($login){
+				                    		if($repositorioVisitas->isMarcado($idPontoTuristico, $email)){
+				                    			echo '
+												<button class="btn btn-success btn-block" id="botao-estive-aqui-add" style="display:none;" ><span class="fa fa-plus-circle"></span> Estive aqui - add </button>
+				                  				<button class="btn btn-success btn-block" id="botao-estive-aqui"><span class="fa fa-plus-circle"></span> Estive aqui </button>
+											';
+				                    		}else {
+				                    			echo '
+												<button class="btn btn-success btn-block" id="botao-estive-aqui-add" ><span class="fa fa-plus-circle"></span> Estive aqui - add </button>
+				                  				<button class="btn btn-success btn-block" id="botao-estive-aqui" style="display:none;"><span class="fa fa-plus-circle"></span> Estive aqui </button>
+											';
+				                    		}
+				                    	}else{
+				                    		echo '
+												<button class="btn btn-success btn-block" id="botao-estive-aqui-add" ><span class="fa fa-plus-circle"></span> Estive aqui - add </button>
+				                  				<button class="btn btn-success btn-block" id="botao-estive-aqui" style="display:none;"><span class="fa fa-plus-circle"></span> Estive aqui </button>
+											';
+				                    	}
+				                    ?>
+				                    
 				                </div>
 				                <div class="col-xs-12 col-sm-4 emphasis">
 				                    <h2><strong id="qtd-favoritos"><?php echo $repositorioPontosTuristicos->pegarQuantidadeDeFavoritados($idPontoTuristico);?></strong></h2>                    
@@ -362,6 +384,25 @@
 				  return $(".starrr").starrr();
 				});
 			$(document).ready(function(){
+
+				$("#botao-estive-aqui-add").click(function(){
+					
+
+					$.ajax({
+						url: "../controladores/ControladorPontosTuristicos.class.php",
+						type:"POST",
+						data:{acao: "add-visita", idPontoTuristico: <?php echo $idPontoTuristico?>},
+						success:function(data){
+							$("#botao-estive-aqui-add").css('display', 'none');
+							$("#botao-estive-aqui").css('display', 'block');
+							var qtd = $("#qtd-estive").text();	
+							$("#qtd-estive").text(parseInt(qtd)+1);	
+						}
+					  });
+
+									
+				});
+
 				
 				$("#botao-favorito-nao-favoritado").click(function(){
 
@@ -399,7 +440,7 @@
 				    $.ajax({
 						url: "../controladores/ControladorPontosTuristicos.class.php",
 						type:"POST",
-						data:{acao: "atualizar-avaliacao", idPontoTuristico: <?php echo $idPontoTuristico?>},
+						data:{acao: "cadastrar_avaliacao_ponto_turistico", valorAvaliado: value, idPontoTuristico: <?php echo $idPontoTuristico?>},
 						success:function(data){
 
 						}
