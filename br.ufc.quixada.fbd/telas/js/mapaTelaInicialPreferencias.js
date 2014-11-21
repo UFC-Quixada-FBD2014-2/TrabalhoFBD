@@ -40,11 +40,11 @@ $(document).ready(function () {
             
             
             var content = [
-                           '<h5><a href="TelaPontoTuristico.php?id={{id}}" title="Clique ver detalhes desse lugar...">{{nome}}</a></h5>',
+                           '<h5><a href="TelaPontoTuristico.php?idPontoTuristico={{id}}" title="Clique ver detalhes desse lugar...">{{nome}}</a></h5>',
             			   '<p id="tags{{id}}">',
             			   		'Tags: {{tags}}',
             			   '</p>',
-	            		   '<a class="btn btn-link pull-right" title="Clique ver detalhes desse lugar..." href="TelaPontoTuristico.php?id={{id}}">',
+	            		   '<a class="btn btn-link pull-right" title="Clique ver detalhes desse lugar..." href="TelaPontoTuristico.php?idPontoTuristico={{id}}">',
 	            				'Mais >>',
 	            		   '</a>'
             			   
