@@ -55,7 +55,7 @@
 			<div class="row">
 			    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
 					<form role="form" method="POST" action="../controladores/ControladorTuristas.class.php">
-						<h2>Cadastre-se <small>&Eacute; gratuito.</small></h2>
+						<h2><small>Edite suas informações básicas</small></h2>
 						<hr class="colorgraph">
 						<div class="form-group">
 							<input required type="text" value="'.$turista->getNome().'" name="nome" id="nome" class="form-control input-lg" placeholder="Nome" tabindex="3">
@@ -64,18 +64,6 @@
 							<input required type="email" value="'.$turista->getEmail().'" name="email" id="email" class="form-control input-lg" placeholder="Endere&ccedil;o de email" tabindex="4">
 						</div>
 						<div class="row">
-							<div class="col-xs-12 col-sm-6 col-md-6">
-								<div class="form-group">
-									<input required type="password" name="senha" id="senha" class="form-control input-lg" placeholder="Senha" tabindex="5">
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-6 col-md-6">
-								<div class="form-group">
-									<input required type="password" name="confirmacao_senha" id="confirmacao_senha" class="form-control input-lg" placeholder="Confirme a senha" tabindex="6">
-								</div>
-							</div>
-						</div>
-			            <div class="row">
 			                <div class="col-xs-12 col-sm-6 col-md-6">
 			                    <div class="form-group">
 			                		<input required type="text" value="'.$turista->getDataDeNascimento().'" name="dataDeNascimento" id="dataDeNascimento" class="form-control input-lg" placeholder="Data de Nascimento" tabindex="6">

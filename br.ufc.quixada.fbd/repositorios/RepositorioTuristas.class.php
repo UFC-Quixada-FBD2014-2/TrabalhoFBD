@@ -46,13 +46,13 @@ Class RepositorioTuristas{
 		}
 	}
 
-	public function removerTurista($email){
+	public function removerTurista($email, $senha){
 			
-		$sqlQuery = 'DELETE FROM Turista WHERE email = ?';
+		$sqlQuery = 'DELETE FROM Turista WHERE email = ? and senha = ?';
 			
 		if($stmt = $this->conexao->prepare($sqlQuery)){
 			$stmt->bindParam(1, $email);
-
+			$stmt->bindParam(2, $senha);
 			if($stmt->execute()){
 				
 			}else{
@@ -67,10 +67,9 @@ Class RepositorioTuristas{
 			
 		$nome = $turista->getNome();
 		$dataDeNascimento = $turista->getDataDeNascimento();
-		$senha = $turista->getSenha();
 		$email = $turista->getEmail();
 
-		$sqlQuery = 'UPDATE Turista SET nome = ?, dataDeNascimento = ?, senha = ? WHERE email = ?';
+		$sqlQuery = 'UPDATE Turista SET nome = ?, dataDeNascimento = ? WHERE email = ?';
 		
 		$this->conexao->beginTransaction();
 		if($stmt = $this->conexao->prepare($sqlQuery)){

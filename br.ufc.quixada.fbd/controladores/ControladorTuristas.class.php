@@ -41,12 +41,15 @@
 		}
 		
 		function removerTurista(){
-			if(isset($_POST['email'])){
+			if(isset($_POST['email'], $_POST['senha'])){
 				try {
+					
+					$senha = $_POST['senha'];
+					$senha = hash('sha512', $senha);
 					
 					$email = $_POST['email'];
 					
-					$this->repositorioTuristas->removerTurista($email);
+					$this->repositorioTuristas->removerTurista($email, $senha);
 					return ConstantesMensagensFeedback::SUCESSO;
 				} catch (Exception $e){
 					return ConstantesMensagensFeedback::FALHA_NO_BANCO;
@@ -58,15 +61,13 @@
 		
 		
 		function atualizarTurista(){
-			if(isset($_POST['nome'], $_POST['senha'], $_POST['dataDeNascimento'], $_POST['preferencias'], $_POST['email'])){
+			if(isset($_POST['nome'], $_POST['dataDeNascimento'], $_POST['preferencias'], $_POST['email'])){
 				$nome = $_POST['nome'];
-				$senha = $_POST['senha'];
-				$senha = hash('sha512', $senha);
 				$dataDeNascimento = $_POST['dataDeNascimento'];
 				$preferencias = $_POST['preferencias'];
 				$email = $_POST['email'];
 			
-				$turista = new Turista($nome, $email, $senha, $dataDeNascimento, $preferencias);
+				$turista = new Turista($nome, $email, null, $dataDeNascimento, $preferencias);
 				try {
 					$this->repositorioTuristas->atualizarTurista($turista);
 					return ConstantesMensagensFeedback::SUCESSO;
