@@ -63,6 +63,7 @@
 				                		<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
 					                		<li role="presentation"><a role="menuitem" tabindex="-1" href="EditarPerfil.php"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Editar Perfil</a></li>
 					                		<li role="presentation"><a role="menuitem" tabindex="-1" href="CadastroPontoTuristico.php"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Adicionar Ponto Turístico</a></li>
+											<li role="presentation"><a role="menuitem" tabindex="-1" href="MeusPontos.php"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Gerenciar Pontos Turísticos</a></li>
 					                		<li role="presentation" class="divider"></li>
 					                		<li role="presentation"><a role="menuitem" tabindex="-1" href="Logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Sair</a></li>
 				                		</ul>

@@ -194,7 +194,7 @@
 		if($acao == "cadastrar"){
 			$retorno = $controlador->cadastrarPontoTuristico();
 			if($retorno == ConstantesMensagensFeedback::SUCESSO){
-				header("Location: ../telas/TelaInicial.php?success=false");
+				header("Location: ../telas/TelaInicial.php");
 			}else{
 				header("Location: ../telas/CadastroPontoTuristico.php?success=false");
 			}

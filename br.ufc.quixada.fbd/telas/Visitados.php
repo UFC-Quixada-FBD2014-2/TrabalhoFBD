@@ -63,6 +63,7 @@
 				                		<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
 					                		<li role="presentation"><a role="menuitem" tabindex="-1" href="EditarPerfil.php"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Editar Perfil</a></li>
 					                		<li role="presentation"><a role="menuitem" tabindex="-1" href="CadastroPontoTuristico.php"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Adicionar Ponto Turístico</a></li>
+											<li role="presentation"><a role="menuitem" tabindex="-1" href="MeusPontos.php"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Gerenciar Pontos Turísticos</a></li>
 					                		<li role="presentation" class="divider"></li>
 					                		<li role="presentation"><a role="menuitem" tabindex="-1" href="Logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Sair</a></li>
 				                		</ul>
@@ -112,11 +113,12 @@
 	
 		</div>
 	
+		<script
+			src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBHju8OGAGzK6TSjG1DI8H8MNqiuFykD00&sensor=false"></script>
+		
 		<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 		
 		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
-		<script
-			src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBHju8OGAGzK6TSjG1DI8H8MNqiuFykD00&sensor=false"></script>
 		
 		<script type="text/javascript" src="js/google-maps/markerclusterer.js"></script>
 		<script type="text/javascript" src="js/google-maps/infoBox.js"></script>

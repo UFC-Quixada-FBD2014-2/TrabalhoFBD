@@ -23,6 +23,8 @@
 			$bairro = $pontoTuristico->getBairro();
 			$idPontoTuristico = $pontoTuristico->getId();
 			
+			if($numero == null) $numero = 0;
+			
 			$sqlQuery = "INSERT INTO EnderecoPontoTuristico 
 						(idPontoTuristico, rua, cidade, estado, pais, numero, bairro) 
 						VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -72,7 +74,8 @@
 			$rua = $pontoTuristico->getRua();
 			$idPontoTuristico = $pontoTuristico->getId();
 			$bairro =  $pontoTuristico->getBairro();
-		
+			if($numero == null) $numero = 0;
+			
 			$sqlQuery = 'UPDATE EnderecoPontoTuristico SET rua = ?, cidade = ?, estado = ?,
 						 pais = ?, numero = ?, bairro = ?
 						 WHERE idPontoTuristico = ?';
