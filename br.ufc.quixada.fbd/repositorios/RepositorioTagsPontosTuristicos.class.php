@@ -64,7 +64,7 @@
 			$sqlQuery = 'INSERT INTO TagDePontoTuristico 
 						(idPontoTuristico, nome) VALUES (?, ?)';
 			
-				
+			if($tags == null) return;
 			for($i=0; $i<count($tags); $i++){
 				if($stmt = $this->conexao->prepare($sqlQuery)){
 					$stmt->bindParam(1, $idPontoTuristico);

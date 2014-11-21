@@ -61,6 +61,7 @@
 				
 			$sqlQuery = 'INSERT INTO PreferenciaDeTurista(emailTurista, nome) VALUES (?, ?)';
 		
+			if($preferencias == null) return;
 			for($i=0; $i<count($preferencias); $i++){
 				
 				if($stmt = $this->conexao->prepare($sqlQuery)){
