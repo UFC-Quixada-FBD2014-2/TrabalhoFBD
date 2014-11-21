@@ -20,7 +20,7 @@
 			$pontos = Array();
 			foreach ($pontosTuristicos as $pontoTuristico){
 				$ponto = Array('latitude'=>$pontoTuristico->getLatitude(), 'longitude'=>$pontoTuristico->getLongitude(),
-						'nome'=>$pontoTuristico->getNome(),'id'=>$pontoTuristico->getId());
+						'nome'=>$pontoTuristico->getNome(),'id'=>$pontoTuristico->getId(), 'tags'=>$pontoTuristico->getTags());
 				array_push($pontos, $ponto);
 			}
 			echo json_encode($pontos);

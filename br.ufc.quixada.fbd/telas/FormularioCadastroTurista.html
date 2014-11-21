@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="row">
 	    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-			<form role="form" method="POST" action="../controladores/ControladorTuristas.class.php">
+			<form id="form-cadastro" role="form" method="POST" action="../controladores/ControladorTuristas.class.php">
 				<h2>Cadastre-se <small>&Eacute; gratuito.</small></h2>
 				<hr class="colorgraph">
 				<div class="form-group">
@@ -18,7 +18,17 @@
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-6">
 						<div class="form-group">
-							<input required type="password" name="confirmacao_senha" id="confirmacao_senha" class="form-control input-lg" placeholder="Confirme a senha" tabindex="6">
+							<input required type="password" name="confirmacao" id="confirmacao" class="form-control input-lg" placeholder="Confirme a senha" tabindex="6">
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-12">
+						<div class="form-group">
+							<div id="mensagem-senha-erro" class="alert alert-danger" role="alert" style="display:none;">As senhas não correspondem
+								<button type="button" class="close" data-dismiss="alert">
+								  <span aria-hidden="true">&times;</span>
+								  <span class="sr-only">Close</span>
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
