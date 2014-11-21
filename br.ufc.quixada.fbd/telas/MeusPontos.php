@@ -55,6 +55,7 @@
 				    	<li class="list-group-item">
 							<p><a href="TelaPontoTuristico.php?idPontoTuristico='.$pontoTuristico->getId().'">'.$pontoTuristico->getNome().'<a></p>
 							<form action="../controladores/ControladorPontosTuristicos.class.php" method="post">
+								<input type="hidden" value="'.$pontoTuristico->getId().'" name="idPontoTuristico"/>
 								<button type="submit" class="btn btn-danger pull-right" title="Excluir"><span class="glyphicon glyphicon-remove"></span></button>
 								<input type="hidden" name="acao" value="remover"/>
 							<form>

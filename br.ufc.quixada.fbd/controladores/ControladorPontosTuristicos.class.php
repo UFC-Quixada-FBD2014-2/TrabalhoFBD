@@ -221,7 +221,8 @@
 			$retorno = $controlador->cadastrarPontoTuristicoFavorito();
 			
 		}else if($acao == "remover"){
-			$controlador->removerPontoTuristico();
+			$retorno = $controlador->removerPontoTuristico();
+			header("Location: ../telas/MeusPontos.php");
 		}else if($acao == "atualizar"){
 			$controlador->atualizarPontoTuristico();
 		}else if($acao == "pegar_ponto_turistico_id"){
