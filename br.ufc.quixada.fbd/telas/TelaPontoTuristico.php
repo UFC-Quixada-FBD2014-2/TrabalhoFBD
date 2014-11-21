@@ -199,8 +199,8 @@
 				                    			echo '<button class="btn btn-info btn-block" title="Clique aqui para desfavoritar" id="botao-favorito-favoritado" style="display:none;"><span class="fa fa-star"></span> Favoritado <span class="fa fa-check"></span></button>';
 				                    		}
 				                    	}else{
-				                    		echo '<button class="btn btn-info btn-block" id="botao-favorito-nao-favoritado"><span class="fa fa-star"></span> Adicionar aos Favoritos </button>';
-				                    		echo '<button class="btn btn-info btn-block" title="Clique aqui para desfavoritar" id="botao-favorito-favoritado" style="display:none;"><span class="fa fa-star"></span> Favoritado <span class="fa fa-check"></span></button>';
+				                    		echo '<a class="btn btn-info btn-block" tabindex="1" data-placement="top" id="botao-favorito-nao-favoritado" role="button" data-trigger="focus" title="Você não está logado" data-content="Faça Login para poder adicionar esse lugar aos favoritos."><span class="fa fa-star"></span> Adicionar aos Favoritos </a>';
+				                    		echo '<a class="btn btn-info btn-block" tabindex="1" data-placement="top" id="botao-favorito-favoritado" role="button" data-trigger="focus" title="Você não está logado" data-content="Faça Login para poder remover este lugar dos seus favoritos" style="display:none;"><span class="fa fa-star"></span> Favoritado <span class="fa fa-check"></span></a>';
 				                    	}
 				                    ?>
 				                    
@@ -263,10 +263,14 @@
 						type:"POST",
 						data:{acao: "cadastrar_ponto_turistico_favorito", idPontoTuristico: <?php echo $idPontoTuristico?>},
 						success:function(data){
-							$("#botao-favorito-nao-favoritado").css('display', 'none');
-							$("#botao-favorito-favoritado").css('display', 'block');
-							var qtd = $("#qtd-favoritos").html();
-							$("#qtd-favoritos").text(parseInt(qtd)+1);
+							if(data == 1){
+								$("#botao-favorito-nao-favoritado").hide();
+								$("#botao-favorito-favoritado").show();
+								var qtd = $("#qtd-favoritos").html();
+								$("#qtd-favoritos").text(parseInt(qtd)+1);
+							}else{
+								$("#botao-favorito-nao-favoritado").popover('show');
+							}
 						}
 					  });
 					  
@@ -278,10 +282,14 @@
 						type:"POST",
 						data:{acao: "remover-ponto-turistico-dos-favoritos", idPontoTuristico: <?php echo $idPontoTuristico?>},
 						success:function(data){
-							$("#botao-favorito-favoritado").css('display', 'none');
-							$("#botao-favorito-nao-favoritado").css('display', 'block');
-							var qtd = $("#qtd-favoritos").html();
-							$("#qtd-favoritos").text(parseInt(qtd)-1);
+							if(data == 1){
+								$("#botao-favorito-favoritado").hide();
+								$("#botao-favorito-nao-favoritado").show();
+								var qtd = $("#qtd-favoritos").html();
+								$("#qtd-favoritos").text(parseInt(qtd)-1);
+							}else{
+								$("#botao-favorito-favoritado").popover('show');
+							}
 						}
 					  });
 				});

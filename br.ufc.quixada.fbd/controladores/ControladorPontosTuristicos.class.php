@@ -145,9 +145,9 @@
 					
 					try{
 						$this->repositorioPontosTuristicos->cadastrarPontoTuristicoFavorito($idPontoTuristico, $emailLogado);
-						echo json_encode(ConstantesMensagensFeedback::SUCESSO);
+						return json_encode(ConstantesMensagensFeedback::SUCESSO);
 					}catch (Exception $e){
-						echo json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
+						return json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
 					}
 			}
 		}
@@ -160,9 +160,9 @@
 					
 				try{
 					$this->repositorioPontosTuristicos->removerPontoTuristicoDosFavoritosTurista($idPontoTuristico, $emailLogado);
-					echo json_encode(ConstantesMensagensFeedback::SUCESSO);
+					return json_encode(ConstantesMensagensFeedback::SUCESSO);
 				}catch (Exception $e){
-					echo json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
+					return json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
 				}
 			}
 		}
@@ -176,7 +176,7 @@
 				 pegarPontosTuristicosFavoritosTurista($emailLogado);
 				
 			}catch (Exception $e){
-				echo json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
+				return json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
 			}
 		}
 	}
@@ -188,6 +188,7 @@
 		$controladorLogin->iniciarSessao();
 		
 		if(!$controladorLogin->checarLogin()){
+			header("location: ../telas/TelaInicial.php");
 			exit(); //TODO : REVER
 		}
 		
@@ -200,7 +201,8 @@
 			
 			echo $retorno;
 		}else if($acao == "cadastrar_ponto_turistico_favorito"){
-			$controlador->cadastrarPontoTuristicoFavorito();
+			$retorno = $controlador->cadastrarPontoTuristicoFavorito();
+			echo $retorno;
 		}else if($acao == "remover"){
 			$controlador->removerPontoTuristico();
 		}else if($acao == "atualizar"){
