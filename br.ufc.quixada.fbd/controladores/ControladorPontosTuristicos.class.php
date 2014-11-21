@@ -177,6 +177,24 @@
 				return json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
 			}
 		}
+		
+		function cadastrarAvaliacaoPontoTuristico(){
+			
+			$emailLogado = $_SESSION['email'];
+			
+			if(isset($_POST['valorAvaliado'], $_POST['idPontoTuristico'])){
+				
+				try {
+					return $this->repositorioPontosTuristicos->
+					pegarPontosTuristicosFavoritosTurista($emailLogado);
+						
+				}catch (Exception $e){
+					return json_encode(ConstantesMensagensFeedback::FALHA_NO_BANCO);
+				}
+			}
+			
+			
+		}
 	}
 	
 	if(isset($_POST['acao'])){

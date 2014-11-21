@@ -67,3 +67,12 @@ CREATE TABLE PontoTuristicoFavoritoTurista (
 	CONSTRAINT PontoTuristicoFavoritoTurista_FKey_emailTurista FOREIGN KEY(emailTurista) REFERENCES Turista(email) ON DELETE cascade,
 	CONSTRAINT PontoTuristicoFavoritoTurista_FKey_idPontoTuristico FOREIGN KEY(idPontoTuristico) REFERENCES PontoTuristico(idPontoTuristico) ON DELETE cascade
 );
+
+CREATE TABLE AvaliacaoPontoTuristico (
+	valorAvaliado int NOT NULL,
+	emailTurista VARCHAR(255) NOT NULL,
+	idPontoTuristico int NOT NULL,
+	CONSTRAINT PontoTuristicoFavoritoTurista_FKey_emailTurista FOREIGN KEY(emailTurista) REFERENCES Turista(email) ON DELETE cascade,
+	CONSTRAINT PontoTuristicoFavoritoTurista_FKey_idPontoTuristico FOREIGN KEY(idPontoTuristico) REFERENCES PontoTuristico(idPontoTuristico) ON DELETE cascade
+);
+	

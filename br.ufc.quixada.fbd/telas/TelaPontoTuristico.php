@@ -158,30 +158,34 @@
 				                    <figure>
 				                        <img src="http://www.localcrimenews.com/wp-content/uploads/2013/07/default-user-icon-profile.png" alt="" class="img-circle img-responsive">
 				                        <figcaption class="ratings">
-				                            <p>Avaliação
-				                            <a href="#">
-				                                <span class="fa fa-star"></span>
-				                            </a>
-				                            <a href="#">
-				                                <span class="fa fa-star"></span>
-				                            </a>
-				                            <a href="#">
-				                                <span class="fa fa-star"></span>
-				                            </a>
-				                            <a href="#">
-				                                <span class="fa fa-star"></span>
-				                            </a>
-				                            <a href="#">
-				                                 <span class="fa fa-star-o"></span>
-				                            </a> 
-				                            </p>
+										    <div class="row lead">
+										        
+										        <?php 
+										        	$valorAvaliado = 0;
+										        	if($login){
+										        		$valorAvaliado = $repositorioPontosTuristicos->pegarValorPontoTuristicoJaAvaliadoPelo($email, $idPontoTuristico);
+										        	}
+										        	else
+										        		$valorAvaliado = 0;
+										        ?>
+										        <div id="stars" class="starrr" data-rating='<?php echo $valorAvaliado?>'></div>
+										        Sua Avaliação <span id="count"><?php echo round($valorAvaliado)?></span> estrela(s)
+											</div>
+										    
+										    <div class="row lead">
+										    	<?php 
+										    		$valor = $repositorioPontosTuristicos->pegarAvaliacaoMediaPontoTuristico($idPontoTuristico);
+										    	?>
+										        <div id="stars-existing" class="starrr" data-rating='<?php echo round($valor)?>'></div>
+										        Avaliação Média <span id="count-existing"><?php echo round($valor)?></span> estrelas(s)
+										    </div>
 				                        </figcaption>
 				                    </figure>
 				                </div>
 				            </div>            
 				            <div class="col-xs-12 divider text-center">
 				                <div class="col-xs-12 col-sm-4 emphasis">
-				                    <h2><strong> 20,7K </strong></h2>                    
+				                    <h2><strong> 1 </strong></h2>                    
 				                    <p><small>Estiveram aqui</small></p>
 				                    <button class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Estive aqui </button>
 				                </div>
@@ -199,8 +203,8 @@
 				                    			echo '<button class="btn btn-info btn-block" title="Clique aqui para desfavoritar" id="botao-favorito-favoritado" style="display:none;"><span class="fa fa-star"></span> Favoritado <span class="fa fa-check"></span></button>';
 				                    		}
 				                    	}else{
-				                    		echo '<a class="btn btn-info btn-block" tabindex="1" data-placement="top" id="botao-favorito-nao-favoritado" role="button" data-trigger="focus" title="Você não está logado" data-content="Faça Login para poder adicionar esse lugar aos favoritos."><span class="fa fa-star"></span> Adicionar aos Favoritos </a>';
-				                    		echo '<a class="btn btn-info btn-block" tabindex="1" data-placement="top" id="botao-favorito-favoritado" role="button" data-trigger="focus" title="Você não está logado" data-content="Faça Login para poder remover este lugar dos seus favoritos" style="display:none;"><span class="fa fa-star"></span> Favoritado <span class="fa fa-check"></span></a>';
+				                    		echo '<a href="Login.php"><button class="btn btn-info btn-block"><span class="fa fa-star"></span> Adicionar aos Favoritos </button></a>';
+				                    		echo '<button class="btn btn-info btn-block" title="Clique aqui para desfavoritar" id="botao-favorito-favoritado" style="display:none;"><span class="fa fa-star"></span> Favoritado <span class="fa fa-check"></span></button>';
 				                    	}
 				                    ?>
 				                    
@@ -253,6 +257,110 @@
 		<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
 		<script>
+				// Starrr plugin (https://github.com/dobtco/starrr)
+				var __slice = [].slice;
+		
+				(function($, window) {
+				  var Starrr;
+		
+				  Starrr = (function() {
+				    Starrr.prototype.defaults = {
+				      rating: void 0,
+				      numStars: 5,
+				      change: function(e, value) {}
+				    };
+		
+				    function Starrr($el, options) {
+				      var i, _, _ref,
+				        _this = this;
+		
+				      this.options = $.extend({}, this.defaults, options);
+				      this.$el = $el;
+				      _ref = this.defaults;
+				      for (i in _ref) {
+				        _ = _ref[i];
+				        if (this.$el.data(i) != null) {
+				          this.options[i] = this.$el.data(i);
+				        }
+				      }
+				      this.createStars();
+				      this.syncRating();
+				      this.$el.on('mouseover.starrr', 'span', function(e) {
+				        return _this.syncRating(_this.$el.find('span').index(e.currentTarget) + 1);
+				      });
+				      this.$el.on('mouseout.starrr', function() {
+				        return _this.syncRating();
+				      });
+				      this.$el.on('click.starrr', 'span', function(e) {
+				        return _this.setRating(_this.$el.find('span').index(e.currentTarget) + 1);
+				      });
+				      this.$el.on('starrr:change', this.options.change);
+				    }
+		
+				    Starrr.prototype.createStars = function() {
+				      var _i, _ref, _results;
+		
+				      _results = [];
+				      for (_i = 1, _ref = this.options.numStars; 1 <= _ref ? _i <= _ref : _i >= _ref; 1 <= _ref ? _i++ : _i--) {
+				        _results.push(this.$el.append("<span class='glyphicon .glyphicon-star-empty'></span>"));
+				      }
+				      return _results;
+				    };
+		
+				    Starrr.prototype.setRating = function(rating) {
+				      if (this.options.rating === rating) {
+				        rating = void 0;
+				      }
+				      this.options.rating = rating;
+				      this.syncRating();
+				      return this.$el.trigger('starrr:change', rating);
+				    };
+		
+				    Starrr.prototype.syncRating = function(rating) {
+				      var i, _i, _j, _ref;
+		
+				      rating || (rating = this.options.rating);
+				      if (rating) {
+				        for (i = _i = 0, _ref = rating - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+				          this.$el.find('span').eq(i).removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+				        }
+				      }
+				      if (rating && rating < 5) {
+				        for (i = _j = rating; rating <= 4 ? _j <= 4 : _j >= 4; i = rating <= 4 ? ++_j : --_j) {
+				          this.$el.find('span').eq(i).removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+				        }
+				      }
+				      if (!rating) {
+				        return this.$el.find('span').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+				      }
+				    };
+		
+				    return Starrr;
+		
+				  })();
+				  return $.fn.extend({
+				    starrr: function() {
+				      var args, option;
+		
+				      option = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+				      return this.each(function() {
+				        var data;
+		
+				        data = $(this).data('star-rating');
+				        if (!data) {
+				          $(this).data('star-rating', (data = new Starrr($(this), option)));
+				        }
+				        if (typeof option === 'string') {
+				          return data[option].apply(data, args);
+				        }
+				      });
+				    }
+				  });
+				})(window.jQuery, window);
+		
+				$(function() {
+				  return $(".starrr").starrr();
+				});
 			$(document).ready(function(){
 				
 				$("#botao-favorito-nao-favoritado").click(function(){
@@ -263,14 +371,10 @@
 						type:"POST",
 						data:{acao: "cadastrar_ponto_turistico_favorito", idPontoTuristico: <?php echo $idPontoTuristico?>},
 						success:function(data){
-							if(data == 1){
-								$("#botao-favorito-nao-favoritado").hide();
-								$("#botao-favorito-favoritado").show();
-								var qtd = $("#qtd-favoritos").html();
-								$("#qtd-favoritos").text(parseInt(qtd)+1);
-							}else{
-								$("#botao-favorito-nao-favoritado").popover('show');
-							}
+							$("#botao-favorito-nao-favoritado").css('display', 'none');
+							$("#botao-favorito-favoritado").css('display', 'block');
+							var qtd = $("#qtd-favoritos").html();
+							$("#qtd-favoritos").text(parseInt(qtd)+1);
 						}
 					  });
 					  
@@ -282,17 +386,29 @@
 						type:"POST",
 						data:{acao: "remover-ponto-turistico-dos-favoritos", idPontoTuristico: <?php echo $idPontoTuristico?>},
 						success:function(data){
-							if(data == 1){
-								$("#botao-favorito-favoritado").hide();
-								$("#botao-favorito-nao-favoritado").show();
-								var qtd = $("#qtd-favoritos").html();
-								$("#qtd-favoritos").text(parseInt(qtd)-1);
-							}else{
-								$("#botao-favorito-favoritado").popover('show');
-							}
+							$("#botao-favorito-favoritado").css('display', 'none');
+							$("#botao-favorito-nao-favoritado").css('display', 'block');
+							var qtd = $("#qtd-favoritos").html();
+							$("#qtd-favoritos").text(parseInt(qtd)-1);
 						}
 					  });
 				});
+
+				$('#stars').on('starrr:change', function(e, value){
+				    $('#count').html(value);
+				    $.ajax({
+						url: "../controladores/ControladorPontosTuristicos.class.php",
+						type:"POST",
+						data:{acao: "atualizar-avaliacao", idPontoTuristico: <?php echo $idPontoTuristico?>},
+						success:function(data){
+
+						}
+					  });
+				  });
+				  
+				 $('#stars-existing').on('starrr:change', function(e, value){
+				    $('#count-existing').html(value);
+				 });
 			  
 			});
 		</script>

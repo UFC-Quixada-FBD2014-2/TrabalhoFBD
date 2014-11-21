@@ -475,5 +475,74 @@
 			}
 		}
 		
+		public function cadastrarAvaliacaoPontoTuristico($valorAvaliado,$idPontoTuristico,$emailLogado){
+			
+			$sqlQuery = 'INSERT INTO AvaliacaoPontoTuristico 
+					(valorAvaliado,emailTurista,idPontoTuristico) VALUES (?,?,?)';
+			
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $valorAvaliado);
+				$stmt->bindParam(2, $emailLogado);
+				$stmt->bindParam(3, $idPontoTuristico);
+				
+				if(!$stmt->execute())
+					throw new FalhaAoExecutarQuery();
+					
+				
+			}else {
+				throw new FalhaPrepareStatement();
+			}
+		}
+		
+		public function pegarAvaliacaoMediaPontoTuristico($idPontoTuristico){
+			
+			$sqlQuery = 'SELECT AVG(valorAvaliado) as media FROM AvaliacaoPontoTuristico
+							WHERE idPontoTuristico = ?';
+				
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $idPontoTuristico);
+			
+				if($stmt->execute()){
+					$resultado = $stmt->fetch();
+					
+					if($resultado != null){
+						return $resultado['media'];
+					}else{
+						return 0;
+					}
+				}else{
+					throw new FalhaAoExecutarQuery();
+				}
+			
+			}else {
+				throw new FalhaPrepareStatement();
+			}
+		}
+		
+		public function pegarValorPontoTuristicoJaAvaliadoPelo($emailLogado,$idPontoTuristico){
+			
+			$sqlQuery = 'SELECT valorAvaliado FROM AvaliacaoPontoTuristico
+							WHERE idPontoTuristico = ? AND emailTurista = ?';
+				
+			if($stmt = $this->conexao->prepare($sqlQuery)){
+				$stmt->bindParam(1, $idPontoTuristico);
+				$stmt->bindParam(2, $emailLogado);
+				
+				if($stmt->execute()){
+					if($stmt->rowCount() == 1){
+						$resultado = $stmt->fetch();
+						return $resultado['valoravaliado'];
+					}else{
+						return -1;
+					}
+				}else{
+					throw new FalhaAoExecutarQuery();
+				}
+			
+			}else {
+				throw new FalhaPrepareStatement();
+			}
+		}
+		
 	}
 ?>

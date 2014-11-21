@@ -49,16 +49,16 @@ CREATE TABLE Visitas (
   idPontoTuristico INTEGER NOT NULL,
   emailTurista VARCHAR(255) NOT NULL,
   dataDaVisita INTEGER NULL,
-  CONSTRAINT Visitas_FKey_idPontoTuristico FOREIGN KEY(idPontoTuristico) REFERENCES PontoTuristico(idPontoTuristico),
-  CONSTRAINT Visitas_FKey_emailTurista FOREIGN KEY(emailTurista) REFERENCES Turista(email)
+  CONSTRAINT Visitas_FKey_idPontoTuristico FOREIGN KEY(idPontoTuristico) REFERENCES PontoTuristico(idPontoTuristico) ON DELETE cascade,
+  CONSTRAINT Visitas_FKey_emailTurista FOREIGN KEY(emailTurista) REFERENCES Turista(email) ON DELETE cascade
 );
 
 
 CREATE TABLE Cadastrou (
   idPontoTuristico INTEGER NOT NULL UNIQUE,
   emailTurista VARCHAR(255) NOT NULL,
-  CONSTRAINT Cadastrou_FKey_idPontoTuristico FOREIGN KEY(idPontoTuristico) REFERENCES PontoTuristico(idPontoTuristico),
-  CONSTRAINT Cadastrou_FKey_emailTurista FOREIGN KEY(emailTurista) REFERENCES Turista(email)
+  CONSTRAINT Cadastrou_FKey_idPontoTuristico FOREIGN KEY(idPontoTuristico) REFERENCES PontoTuristico(idPontoTuristico) ON DELETE cascade,
+  CONSTRAINT Cadastrou_FKey_emailTurista FOREIGN KEY(emailTurista) REFERENCES Turista(email) ON DELETE cascade
 );
 
 CREATE TABLE PontoTuristicoFavoritoTurista (
